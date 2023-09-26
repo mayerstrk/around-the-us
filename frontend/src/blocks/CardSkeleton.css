@@ -1,0 +1,38 @@
+@keyframes skeleton-loading {
+  0% {
+    /* background-color: hsl(200, 20%, 95%); */
+    opacity: 10%;
+  }
+  100% {
+    /* background-color: hsl(200, 20%, 100%); */
+    opacity: 70%;
+  }
+}
+
+.card-skeleton {
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+  background: #f9f9f9;
+  /* animation: skeleton-loading 1s linear infinite alternate; */
+  overflow: hidden;
+
+}
+
+.card-skeleton__photo-container {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 282px;
+  height: 282px;
+  position: relative;
+}
+
+.card-skeleton__bar {
+  min-height: 80px;
+  padding: 0 18px 0;
+  display: flex;
+  align-items: center;
+  background: #fff;  
+}

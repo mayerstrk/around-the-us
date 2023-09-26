@@ -1,0 +1,163 @@
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.21;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.form__wrapper {
+  width: 358px;
+  margin: 60px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form_type_page {
+  gap: 30px;
+}
+
+.form__title {
+  margin: 0 0 54px;
+  padding: 0;
+  font-size: 24px;
+  line-height: 29px;
+  font-weight: 900;
+  font-family: "Inter", Arial, sans-serif;
+  color: #000;
+}
+
+.form__title_type_page {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.form__fieldset {
+  padding: 0;
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.form__fieldset_type_page {
+  margin: 0 0 216px;
+}
+
+.form__input {
+  box-sizing: border-box;
+  padding: 0 7px 9px;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  outline: none;
+}
+
+.form__input_type_page {
+  background: #000;
+  color: #ccc;
+  border-bottom: 2px #ccc solid;
+}
+
+.form__input_valid:focus {
+  outline: none;
+  border-bottom: 1px #719ece solid;
+}
+
+.form__input::placeholder {
+  color: #000;
+}
+
+.form__input_type_page::placeholder {
+  color: #ccc;
+}
+
+.form__input_valid {
+  border-bottom: rgba(0, 0, 0, 0.2) 1px solid;
+}
+
+.form__input_valid:focus {
+  outline: none;
+  border-bottom: 1px #719ece solid;
+}
+
+.form__input_error {
+  border-bottom: 1px solid #ff0000;
+}
+
+.form__input_error:focus {
+  outline: none;
+}
+
+.form__input-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.form__error {
+  width: fit-content;
+  margin: 5px 0 0;
+  padding: 0 7px 0;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 15px;
+  color: #ff0000;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.form__error_visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.form__bottom-link {
+  margin-top: 0;
+  text-decoration: none;
+  color: #fff;
+  font-size: 14px;
+}
+
+.form__button {
+  margin: 18px 0 0;
+  background: #000;
+  border: 1px solid #000;
+  color: #fff;
+  font-size: 18px;
+  border-radius: 2px;
+  line-height: 1.22;
+  padding: 14px;
+  cursor: pointer;
+  transition: opacity ease-out 0.3s;
+}
+
+.form__button_type_page {
+  background: #fff;
+  color: #000;
+  margin: 0 0 15px;
+}
+
+.form__button:hover:not(:disabled) {
+  opacity: 0.8;
+}
+
+.form__button_disabled {
+  opacity: 0.2;
+  color: #000;
+  background: transparent;
+  border: #000 1px solid;
+  cursor: default;
+}
+
+@media screen and (max-width: 524px) {
+  .form__button {
+    margin-top: 16px;
+    padding: 12px;
+  }
+}

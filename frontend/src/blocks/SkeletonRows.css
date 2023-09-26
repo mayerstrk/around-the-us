@@ -1,0 +1,16 @@
+.skeleton-rows {
+  width : 75%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 10px;
+  list-style-type: none;
+  padding: 0;
+}
+
+.skeleton-rows__row {
+  background: #e0e0e0;
+  height: 10px;
+  border-color: #fff;
+  border-radius: 10px;
+}

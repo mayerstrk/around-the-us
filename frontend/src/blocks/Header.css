@@ -1,0 +1,67 @@
+.header {
+  margin: 0;
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+  display: flex;
+  justify-content: space-between;
+}
+
+.header__logo {
+  margin-bottom: 36px;
+}
+
+.header__session-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.header__button_logout {
+  background: none;
+  border: none;
+  color: #a9a9a9;
+  height: 22px;
+  width: 65px;
+  padding: 0;
+  line-height: 22px;
+  font-size: 18px;
+}
+
+.header__button_logout:hover {
+  cursor: pointer;
+}
+
+.header__link_auth {
+  color: #a9a9a9;
+  height: 22px;
+  width: 65px;
+  padding: 0;
+  line-height: 22px;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.header__user-email {
+  padding: 0;
+  margin: 0;
+  height: 22px;
+  color: #fff;
+  text-align: right;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+@media screen and (max-width: 768px) {
+  .header__logo {
+    margin: 0 0 27px 27px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .header__logo {
+    width: 126px;
+    height: 24px;
+  }
+}

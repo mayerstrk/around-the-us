@@ -1,0 +1,89 @@
+{
+  "name": "around-react-ts",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.9.2",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/jest": "^27.5.2",
+    "@types/js-cookie": "^3.0.3",
+    "@types/node": "^17.0.45",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
+    "js-cookie": "^3.0.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.15.0",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "xo && react-scripts test",
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "eslint-config-xo": "^0.43.1",
+    "eslint-config-xo-react": "^0.27.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-unicorn": "^45.0.2",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "file-loader": "^6.2.0",
+    "gh-pages": "^5.0.0",
+    "typescript": "^4.9.5",
+    "xo": "^0.53.1"
+  },
+  "xo": {
+    "envs": [
+      "browser"
+    ],
+    "extends": [
+      "xo",
+      "xo-react"
+    ],
+    "rules": {
+      "import/extensions": "off",
+      "unicorn/filename-case": "off",
+      "@typescript-eslint/consistent-type-definitions": [
+        "error",
+        "interface"
+      ],
+      "import/no-named-as-default": "off",
+      "@typescript-eslint/consistent-type-assertions": "off",
+      "object-curly-spacing": "off",
+      "@typescript-eslint/object-curly-spacing": [
+        "error",
+        "always"
+      ],
+      "@typescript-eslint/restrict-template-expressions": "off",
+      "@typescript-eslint/no-unused-vars": "error",
+      "@typescript-eslint/no-floating-promises": "off",
+      "react/react-in-jsx-scope": "off",
+      "react-hooks/exhaustive-deps": "off",
+      "@typescript-eslint/no-implicit-any-catch": "off",
+      "@typescript-eslint/no-throw-literal": "off",
+      "@typescript-eslint/naming-convention": "off"
+    }
+  }
+}

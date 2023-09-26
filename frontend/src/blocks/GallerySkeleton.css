@@ -1,0 +1,20 @@
+@keyframes skeleton-loading {
+  0% {
+    /* background-color: hsl(200, 20%, 95%); */
+    opacity: 10%;
+  }
+  100% {
+    /* background-color: hsl(200, 20%, 100%); */
+    opacity: 70%
+  }
+}
+
+.gallery-skeleton__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 282px);
+  justify-content: center;
+  gap: 20px 17px;
+  padding: 0;
+  list-style: none;
+  animation: skeleton-loading 1s linear infinite alternate;
+}

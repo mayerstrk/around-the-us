@@ -1,0 +1,72 @@
+@keyframes skeleton-loading {
+  0% {
+    /* background-color: hsl(200, 20%, 95%); */
+    opacity: 10%;
+  }
+  100% {
+    /* background-color: hsl(200, 20%, 100%); */
+    opacity: 70%;
+  }
+}
+
+.profile-skeleton {
+  margin: 40px 0 50px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.profile-skeleton__avatar {
+  display: flex;
+  margin: 0 30px 0 0;
+  align-items: center;
+  opacity: 1;
+  background: #f9f9f9;
+
+  animation: skeleton-loading 1s linear infinite alternate;
+
+  justify-content: center;
+  flex-direction: column;
+  gap: 5%;
+
+  border-radius: 50%;
+  min-width: 120px;
+  min-height: 120px;
+  width: 120px;
+  height: 120px;
+  overflow-wrap: break-word;
+}
+
+.profile-skeleton__details {
+  margin-right: 30px;
+  height: 100%;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@media screen and (max-width: 768px) {
+  .profile-skeleton {
+    margin: 42px 0 36px;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: auto;
+  }
+
+  .profile-skeleton__avatar {
+    margin: 0 0 30px;
+  }
+
+  .profile-skeleton__details {
+    align-items: center;
+    /* bottom marign is 36px - 3px since brief doesn't account for
+    profile__caption line height */
+    justify=content: center;
+    margin: 0 0 33px;
+    max-width: 90%;
+  }
+}

@@ -1,0 +1,25 @@
+@keyframes fade-in {
+  0% {
+    /* background-color: hsl(200, 20%, 95%); */
+    opacity: 10%;
+  }
+  100% {
+    /* background-color: hsl(200, 20%, 100%); */
+    opacity: 100%;
+  }
+}
+
+.gallery {
+  width: 100%;
+  margin: 0 0 68px;
+}
+
+.gallery__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 282px);
+  justify-content: center;
+  gap: 20px 17px;
+  padding: 0;
+  list-style: none;
+  animation: fade-in 0.5s linear;
+}
