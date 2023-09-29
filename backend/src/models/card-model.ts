@@ -1,19 +1,6 @@
-import { Schema, model, type Types, type Document } from 'mongoose';
-import { mongooseLinkValidator } from '../utils';
-
-interface CardInput {
-	name: string;
-	link: string;
-}
-
-interface CardData extends CardInput {
-	createdAt: Date;
-	updatedAt: Date;
-	likes: Types.ObjectId[];
-	owner: Types.ObjectId;
-}
-
-type CardDocument = Document<Types.ObjectId | string> & CardData;
+import { Schema, model } from 'mongoose';
+import validator from 'validator';
+import { type CardDocument } from '@shared/shared-types/resources/card.types';
 
 const cardSchema = new Schema<CardDocument>(
 	{
@@ -27,7 +14,7 @@ const cardSchema = new Schema<CardDocument>(
 			type: String,
 			required: true,
 			validate: {
-				validator: mongooseLinkValidator,
+				validator: (url: string) => validator.isURL(url),
 			},
 		},
 		owner: {
@@ -50,4 +37,4 @@ const cardSchema = new Schema<CardDocument>(
 
 const CardModel = model<CardDocument>('Card', cardSchema);
 
-export { CardModel, type CardInput, type CardData };
+export { CardModel };

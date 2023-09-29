@@ -1,4 +1,5 @@
 import { type Document, type Types } from 'mongoose';
+import { type Timestamps } from '../mongoose.types';
 
 type RequestUser = {
 	_id: string;
@@ -9,9 +10,7 @@ type UserDetails = {
 	about: string;
 };
 
-type UserInput = {
-	name: string;
-	about: string;
+type UserInput = UserDetails & {
 	avatar: string;
 };
 
@@ -20,14 +19,9 @@ type UserCredentials = {
 	password: string;
 };
 
-type UserData = UserInput & UserCredentials;
+type UserData = UserInput & UserCredentials & Timestamps;
 
-type Timestamps = {
-	createdAt: Date;
-	updatedAt: Date;
-};
-
-type UserDocument = Document<Types.ObjectId | string> & UserData & Timestamps;
+type UserDocument = Document<Types.ObjectId | string> & UserData;
 
 export type {
 	RequestUser,
@@ -35,6 +29,5 @@ export type {
 	UserInput,
 	UserCredentials,
 	UserData,
-	Timestamps,
 	UserDocument,
 };

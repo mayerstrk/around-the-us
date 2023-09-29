@@ -8,7 +8,7 @@ import { Status } from '../../shared/shared-enums/status';
 import protectedRoutes from './routes/protected-routes';
 import publicRoutes from './routes/public-routes';
 import validateTokenMiddleware from './middleware/validate-token-middleware';
-import errorsHandlerMiddleware from './middleware/error-handler-middleware';
+import errorHandlerMiddleware from './middleware/error-handler-middleware';
 
 // eslint-disable-next-line unicorn/prefer-module
 const envPath = path.resolve(__dirname, '../.env'); // Adjust the '../.env' part if your .env file is located elsewhere
@@ -47,7 +47,7 @@ connect('mongodb://127.0.0.1:27017/aroundb-test')
 			response.status(Status.notFound).send('Page Not Found');
 		});
 
-		app.use('/', errorsHandlerMiddleware);
+		app.use('/', errorHandlerMiddleware);
 
 		app.listen(PORT, () => {
 			console.log(

@@ -5,11 +5,12 @@ import {
 	type AppRequestEndpointName,
 } from '@shared/shared-enums/endpoint-names';
 import { type AppRequest } from '@shared/shared-types/requests/app-request.types';
+import { type AppResponseDictonary } from '@shared/shared-types/requests/app-response-dictionaries.types';
 
 interface ControllerHelperResult<N extends AppRequestEndpointName> {
 	request: AppRequest<N>;
 	response: Response;
-	data: unknown;
+	data: AppResponseDictonary[N]['body'];
 }
 
 type QueryControllerHelper<N extends AppQueryEndpointName> = (
