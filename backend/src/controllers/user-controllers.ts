@@ -1,21 +1,22 @@
 import process from 'node:process';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { ErrorName } from '@shared/shared-enums/error-names';
 import safe from '@shared/shared-helpers/safe';
+import { ErrorName } from '@shared/shared-enums/error-names';
 import { isRequestUser } from '@shared/shared-helpers/is-request-user';
 import controllerBuilder from '../builders/controller-builder/controller-builder';
 import {
 	type AppMutationEndpointName,
 	type AppQueryEndpointName,
-} from '../enums/endpoint-names';
-import { UserDocument, UserModel } from '../models/user-model';
+} from '../../../shared/shared-enums/endpoint-names';
+import { UserModel } from '../models/user-model';
 import {
 	type MutationControllerHelper,
 	type QueryControllerHelper,
-} from '../types/controller-helper-types';
+} from '../types/controller-helper.types';
 
 // === Get users ===
+
 const getUsersControllerHelper: QueryControllerHelper<
 	AppQueryEndpointName.getUsers
 > = async (request, response) => {
@@ -155,9 +156,9 @@ const validateTokenControllerHelper: QueryControllerHelper<
 
 	const decoded = await safe({
 		value: jwt.verify(token, process.env.JWT_SECRET!),
-		typeguard: isRequestUser,
 		errorMessage: 'Invalid token format.',
 		errorName: ErrorName.authentication,
+		typeguard: isRequestUser,
 	});
 
 	return {

@@ -1,10 +1,10 @@
-import e, { type Response } from 'express';
+import { type Response } from 'express';
 import {
 	type AppMutationEndpointName,
 	type AppQueryEndpointName,
 	type AppRequestEndpointName,
-} from '../enums/endpoint-names';
-import { type AppRequest } from './app-request-types';
+} from '@shared/shared-enums/endpoint-names';
+import { type AppRequest } from '@shared/shared-types/requests/app-request.types';
 
 interface ControllerHelperResult<N extends AppRequestEndpointName> {
 	request: AppRequest<N>;
@@ -31,6 +31,7 @@ interface MutationHelperOptions<N extends AppMutationEndpointName> {
 }
 
 export type {
+	ControllerHelperResult,
 	QueryControllerHelper,
 	MutationControllerHelper,
 	QueryHelperOptions,

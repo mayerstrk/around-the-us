@@ -20,7 +20,6 @@ const validateTokenMiddleware: RequestHandler = async (
 
 		const decoded = await safe({
 			value: jwt.verify(token, process.env.JWT_SECRET!),
-			async: true,
 			errorMessage: 'Invalid token format.',
 			errorName: ErrorName.authentication,
 			typeguard: isRequestUser,

@@ -4,8 +4,8 @@
 	"description": "",
 	"main": "./src/app.ts",
 	"scripts": {
-		"dev": "npx nodemon ./src/app.ts",
-		"start": "npx ts-node ./src/app.ts",
+		"dev": "npx nodemon -r tsconfig-paths/register -x ts-node ./src/app.ts",
+		"start": "npx ts-node -r tsconfig-paths/register ./src/app.ts",
 		"test": "xo"
 	},
 	"author": "",
@@ -27,6 +27,7 @@
 		"nodemon": "^2.0.21",
 		"prettier": "^3.0.3",
 		"ts-node": "^10.9.1",
+		"tsconfig-paths": "^4.2.0",
 		"typescript": "^5.2.2",
 		"xo": "^0.56.0"
 	},
@@ -45,6 +46,13 @@
 		"bracketSpacing": true
 	},
 	"xo": {
+		"parser": "@typescript-eslint/parser",
+		"plugins": [
+			"@typescript-eslint"
+		],
+		"extends": [
+			"plugin:@typescript-eslint/recommended"
+		],
 		"prettier": true,
 		"rules": {
 			"import/extensions": "off",

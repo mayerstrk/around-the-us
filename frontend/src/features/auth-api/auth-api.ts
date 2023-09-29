@@ -1,7 +1,7 @@
 import axios, { type AxiosResponse, type AxiosError, isAxiosError } from 'axios';
 
 export interface UserIdentifiers {
-		_id: string;
+	_id: string;
 }
 
 export interface UserCredentials {
@@ -47,7 +47,7 @@ const handleApiError = (error: unknown): string => {
 const authApi = {
 	async logIn(credentials: UserCredentials): Promise<AxiosResponse<void>> {
 		try {
-			const response = await baseAuthApi.post<UserToken>('/signin', credentials);
+			return await baseAuthApi.post<UserToken>('/signin', credentials);
 		} catch (error) {
 			throw new Error(handleApiError(error));
 		}

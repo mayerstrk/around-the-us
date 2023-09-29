@@ -1,69 +1,14 @@
-import { type Request, type Response } from 'express';
-import { ErrorName } from '@shared/shared-enums/error-names';
+import { type RequestHandler } from 'express-serve-static-core';
+import { type AppRequest } from '@shared/shared-types/requests/app-request.types';
 import {
 	type AppMutationEndpointName,
 	type AppQueryEndpointName,
-} from '../../enums/endpoint-names';
+} from '../../../../shared/shared-enums/endpoint-names';
 import { Status } from '../../../../shared/shared-enums/status';
-import { type AppRequest } from '../../types/app-request-types';
 import {
 	type MutationHelperOptions,
 	type QueryHelperOptions,
-} from '../../types/controller-helper-types';
-
-interface AppError extends Error {
-	code?: number;
-	name: ErrorName;
-}
-
-const handleError = (error: AppError, response: Response) => {
-	switch (error.name) {
-		case ErrorName.validation: {
-			response.status(Status.badRequest);
-			break;
-		}
-
-		case ErrorName.notFound: {
-			response.status(Status.notFound);
-			break;
-		}
-
-		case ErrorName.cast: {
-			response.status(Status.badRequest);
-			break;
-		}
-
-		case ErrorName.authentication: {
-			response.status(Status.unauthorized);
-			break;
-		}
-
-		case ErrorName.authorization: {
-			response.status(Status.forbidden);
-			break;
-		}
-
-		case ErrorName.duplicateKey: {
-			if (error.code !== 11_000) {
-				break;
-			}
-
-			response.status(Status.badRequest);
-			break;
-		}
-
-		default: {
-			response.status(Status.internalServerError);
-			break;
-		}
-	}
-
-	response.send({
-		message: error.message ?? 'Unexpected error',
-		name: error.name,
-	});
-};
-
+} from '../../types/controller-helper.types';
 /**
  * The `controllerBuilder` provides a streamlined way to build Express.js
  * controllers. Its core objective is to abstract repetitive behaviors, such as
@@ -111,8 +56,8 @@ const handleError = (error: AppError, response: Response) => {
 const controllerBuilder = {
 	query<N extends AppQueryEndpointName>({
 		controllerHelper,
-	}: QueryHelperOptions<N>) {
-		return async (request: Request, response: Response) => {
+	}: QueryHelperOptions<N>): RequestHandler {
+		return async (request, response, next) => {
 			try {
 				let data;
 				({ request, response, data } = await controllerHelper(
@@ -122,14 +67,14 @@ const controllerBuilder = {
 
 				response.status(Status.ok).send({ data });
 			} catch (error) {
-				handleError(error as AppError, response);
+				next(error);
 			}
 		};
 	},
 	mutation<N extends AppMutationEndpointName>({
 		controllerHelper,
-	}: MutationHelperOptions<N>) {
-		return async (request: Request, response: Response) => {
+	}: MutationHelperOptions<N>): RequestHandler {
+		return async (request, response, next) => {
 			try {
 				let data;
 				({ request, response, data } = await controllerHelper(
@@ -139,7 +84,7 @@ const controllerBuilder = {
 
 				response.status(Status.ok).send({ data });
 			} catch (error) {
-				handleError(error as AppError, response);
+				next(error);
 			}
 		};
 	},

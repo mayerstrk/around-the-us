@@ -1,22 +1,22 @@
-interface GetUserBaseRequest {
+type GetUserBaseRequest = {
 	params: { userId: string };
 	body: Record<string, never>;
-}
+};
 
-interface GetUsersBaseRequest {
+type GetUsersBaseRequest = {
 	params: Record<string, never>;
 	body: Record<string, never>;
-}
+};
 
-interface GetCardsBaseRequest {
+type GetCardsBaseRequest = {
 	params: Record<string, never>;
 	body: Record<string, never>;
-}
+};
 
-interface ValidateTokenBaseRequest {
+type ValidateTokenBaseRequest = {
 	params: Record<string, never>;
 	body: Record<string, never>;
-}
+};
 
 export type {
 	GetUserBaseRequest,

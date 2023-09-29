@@ -3,7 +3,6 @@ import {
 	ValidationError,
 } from '../shared-classes/shared-custom-errors';
 import { type ErrorName } from '../shared-enums/error-names';
-import { type CustomError } from '../shared-types/helper-types/custom-error-helper-type';
 import getErrorConstructor from './get-error-constructor';
 
 type NeitherOption = {
@@ -80,8 +79,11 @@ async function safe<V, R extends V>(configuration: SafeConfig<V, R>) {
 
 	let resolvedValue;
 
+	console.log('Async flag value:', async);
+
 	if (async) {
 		try {
+			console.log('async');
 			resolvedValue = await value;
 		} catch (error) {
 			const ErrorConstructor = getErrorConstructor(errorName);
@@ -91,8 +93,10 @@ async function safe<V, R extends V>(configuration: SafeConfig<V, R>) {
 		resolvedValue = value as NonNullable<V>;
 	}
 
+	console.log('not async');
+
 	if (resolvedValue === null || resolvedValue === undefined) {
-		throw new CastError('Value is null or undefined');
+		throw new CastError(`${errorMessage} - Value is null or undefined`);
 	}
 
 	if (test) {

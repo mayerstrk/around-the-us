@@ -1,15 +1,13 @@
-import { type Request } from 'express';
 import {
-	type AppRequestEndpointName,
-	type AppMutationEndpointName,
 	type AppQueryEndpointName,
-} from '../enums/endpoint-names';
+	type AppMutationEndpointName,
+} from '../../shared-enums/endpoint-names';
 import {
 	type GetUserBaseRequest,
 	type GetUsersBaseRequest,
 	type GetCardsBaseRequest,
 	type ValidateTokenBaseRequest,
-} from './app-query-request-types';
+} from './app-queries.types';
 import {
 	type UpdateProfileInfoBaseRequest,
 	type UpdateAvatarBaseRequest,
@@ -19,16 +17,16 @@ import {
 	type UnlikeCardBaseRequest,
 	type CreateUserBaseRequest,
 	type LoginBaseRequest,
-} from './app-mutation-request-types';
+} from './app-mutations.types';
 
-interface AppQueryDictionary {
+type AppQueryDictionary = {
 	[AppQueryEndpointName.getUser]: GetUserBaseRequest;
 	[AppQueryEndpointName.getUsers]: GetUsersBaseRequest;
 	[AppQueryEndpointName.getCards]: GetCardsBaseRequest;
 	[AppQueryEndpointName.validateToken]: ValidateTokenBaseRequest;
-}
+};
 
-interface AppMutationDictionary {
+type AppMutationDictionary = {
 	[AppMutationEndpointName.updateProfileInfo]: UpdateProfileInfoBaseRequest;
 	[AppMutationEndpointName.updateAvatar]: UpdateAvatarBaseRequest;
 	[AppMutationEndpointName.addCard]: AddCardBaseRequest;
@@ -37,8 +35,8 @@ interface AppMutationDictionary {
 	[AppMutationEndpointName.unlikeCard]: UnlikeCardBaseRequest;
 	[AppMutationEndpointName.createUser]: CreateUserBaseRequest;
 	[AppMutationEndpointName.login]: LoginBaseRequest;
-}
+};
 
 type AppRequestDictionary = AppQueryDictionary & AppMutationDictionary;
 
-export type { AppRequestDictionary };
+export type { AppQueryDictionary, AppMutationDictionary, AppRequestDictionary };

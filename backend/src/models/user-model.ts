@@ -7,16 +7,21 @@ interface UserInput {
 	name: string;
 	about: string;
 	avatar: string;
+}
+
+interface UserCredentials {
 	email: string;
 	password: string;
 }
+
+type UserData = UserInput & UserCredentials;
 
 interface Timestamps {
 	createdAt: Date;
 	updatedAt: Date;
 }
 
-type UserDocument = Document<Types.ObjectId | string> & UserInput & Timestamps;
+type UserDocument = Document<Types.ObjectId | string> & UserData & Timestamps;
 
 interface IUserModel extends Model<UserDocument> {
 	findUserByCredentials(email: string, password: string): Promise<UserDocument>;

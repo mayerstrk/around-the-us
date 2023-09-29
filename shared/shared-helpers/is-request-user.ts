@@ -1,4 +1,4 @@
-import { type RequestUser } from '../shared-types/user-types';
+import { type RequestUser } from '../shared-types/resources/user.types';
 
 function isRequestUser(value: unknown): value is RequestUser {
 	if (typeof value !== 'object' || value === null) return false;

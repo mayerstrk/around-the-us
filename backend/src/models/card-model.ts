@@ -13,38 +13,41 @@ interface CardData extends CardInput {
 	owner: Types.ObjectId;
 }
 
-const cardSchema = new Schema<CardData>({
-	name: {
-		type: String,
-		required: true,
-		minlength: 2,
-		maxlength: 30,
-	},
-	link: {
-		type: String,
-		required: true,
-		validate: {
-			validator: mongooseLinkValidator,
+type CardDocument = Document<Types.ObjectId | string> & CardData;
+
+const cardSchema = new Schema<CardDocument>(
+	{
+		name: {
+			type: String,
+			required: true,
+			minlength: 2,
+			maxlength: 30,
 		},
-	},
-	owner: {
-		type: Schema.Types.ObjectId,
-		required: true,
-	},
-	likes: [
-		{
+		link: {
+			type: String,
+			required: true,
+			validate: {
+				validator: mongooseLinkValidator,
+			},
+		},
+		owner: {
 			type: Schema.Types.ObjectId,
-			default: [],
+			required: true,
 		},
-	],
-	createdAt: {
-		type: Date,
-		default: Date.now(),
+		likes: [
+			{
+				type: Schema.Types.ObjectId,
+				default: [],
+			},
+		],
+		createdAt: {
+			type: Date,
+			default: Date.now(),
+		},
 	},
-});
+	{ timestamps: true },
+);
 
-cardSchema.set('timestamps', true);
+const CardModel = model<CardDocument>('Card', cardSchema);
 
-const CardDoc = model<CardData>('Card', cardSchema);
-
-export { CardDoc, type CardInput, type CardData };
+export { CardModel, type CardInput, type CardData };

@@ -1,0 +1,24 @@
+{
+  "name": "around-the-us",
+  "version": "1.0.0",
+  "main": "syncVersions.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mayerstrk/around-the-us.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mayerstrk/around-the-us/issues"
+  },
+  "homepage": "https://github.com/Mayerstrk/around-the-us#readme",
+  "dependencies": {
+    "prettier": "^3.0.3",
+    "semver": "^7.5.4"
+  },
+  "description": ""
+}

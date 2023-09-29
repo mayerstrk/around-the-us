@@ -4,19 +4,20 @@ import controllerBuilder from '../builders/controller-builder/controller-builder
 import {
 	type AppMutationEndpointName,
 	type AppQueryEndpointName,
-} from '../enums/endpoint-names';
-import { CardDoc } from '../models/card-model';
+} from '../../../shared/shared-enums/endpoint-names';
+import { CardModel } from '../models/card-model';
 import {
 	type MutationControllerHelper,
 	type QueryControllerHelper,
-} from '../types/controller-helper-types';
+} from '../types/controller-helper.types';
 
 // === Get cards ===
+
 const getCardsControllerHelper: QueryControllerHelper<
 	AppQueryEndpointName.getCards
 > = async (request, response) => {
 	const data = await safe({
-		value: CardDoc.find({}),
+		value: CardModel.find({}),
 		errorMessage: 'Failed to retrieve cards from the database.',
 		errorName: ErrorName.notFound,
 		async: true,
@@ -29,12 +30,13 @@ const getCardsController = controllerBuilder.query({
 });
 
 // === Create card ===
+
 const createCardControllerHelper: MutationControllerHelper<
 	AppMutationEndpointName.addCard
 > = async (request, response) => {
 	const { body, user } = request;
 	const data = await safe({
-		value: CardDoc.create({ ...body, owner: user._id }),
+		value: CardModel.create({ ...body, owner: user._id }),
 		errorMessage: 'Failed to create a new card in the database.',
 		errorName: ErrorName.internalServerError,
 		async: true,
@@ -55,7 +57,7 @@ const likeCardControllerHelper: MutationControllerHelper<
 		user,
 	} = request;
 	const data = await safe({
-		value: CardDoc.findByIdAndUpdate(
+		value: CardModel.findByIdAndUpdate(
 			cardId,
 			{ $addToSet: { likes: user._id } },
 			{ new: true, runValidators: true },
@@ -72,6 +74,7 @@ const likeCardController = controllerBuilder.mutation({
 });
 
 // === Unlike card ===
+
 const unlikeCardControllerHelper: MutationControllerHelper<
 	AppMutationEndpointName.unlikeCard
 > = async (request, response) => {
@@ -80,7 +83,7 @@ const unlikeCardControllerHelper: MutationControllerHelper<
 		user,
 	} = request;
 	const data = await safe({
-		value: CardDoc.findByIdAndUpdate(
+		value: CardModel.findByIdAndUpdate(
 			cardId,
 			{ $pull: { likes: user._id } },
 			{ new: true },
@@ -97,6 +100,7 @@ const unlikeCardController = controllerBuilder.mutation({
 });
 
 // === Delete card ===
+
 const deleteCardControllerHelper: MutationControllerHelper<
 	AppMutationEndpointName.deleteCard
 > = async (request, response) => {
@@ -104,7 +108,7 @@ const deleteCardControllerHelper: MutationControllerHelper<
 		params: { cardId },
 	} = request;
 	const data = await safe({
-		value: CardDoc.findByIdAndDelete(cardId),
+		value: CardModel.findByIdAndDelete(cardId),
 		errorMessage: 'Failed to delete the specified card from the database.',
 		errorName: ErrorName.internalServerError,
 		async: true,

@@ -42,7 +42,7 @@ class NotFoundError extends CustomError {
 class CastError extends CustomError {
 	constructor(message: string, originalError?: Error) {
 		super(
-			message || 'Type casting error.',
+			message || 'Type casting error. ',
 			Status.badRequest,
 			ErrorName.cast,
 			originalError,
@@ -106,10 +106,12 @@ type AppCustomErrorConstructor =
 export type { AppCustomErrorConstructor };
 
 export {
+	CustomError,
 	ValidationError,
 	NotFoundError,
 	CastError,
 	DuplicateKeyError,
 	AuthenticationError,
 	AuthorizationError,
+	InternalServerError,
 };

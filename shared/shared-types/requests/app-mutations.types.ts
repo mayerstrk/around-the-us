@@ -1,50 +1,50 @@
-import { type BaseCardData } from '@shared/shared-types/card-types';
 import {
 	type UserDetails,
 	type UserCredentials,
-} from '@shared/shared-types/user-types';
+} from '../resources/user.types';
+import { type BaseCardData } from '../resources/card.types';
 
-interface UpdateProfileInfoBaseRequest {
+type UpdateProfileInfoBaseRequest = {
 	params: Record<string, never>;
 	body: UserDetails;
-}
+};
 
-interface UpdateAvatarBaseRequest {
+type UpdateAvatarBaseRequest = {
 	params: Record<string, never>;
 	body: {
 		avatar: string;
 	};
-}
+};
 
-interface AddCardBaseRequest {
+type AddCardBaseRequest = {
 	params: Record<string, never>;
 	body: BaseCardData;
-}
+};
 
-interface DeleteCardBaseRequest {
+type DeleteCardBaseRequest = {
 	params: { cardId: string };
 	body: Record<string, never>;
-}
+};
 
-interface LikeCardBaseRequest {
+type LikeCardBaseRequest = {
 	params: { cardId: string };
 	body: Record<string, never>;
-}
+};
 
-interface UnlikeCardBaseRequest {
+type UnlikeCardBaseRequest = {
 	params: { cardId: string };
 	body: Record<string, never>;
-}
+};
 
-interface CreateUserBaseRequest {
+type CreateUserBaseRequest = {
 	params: Record<string, never>;
 	body: UserCredentials;
-}
+};
 
-interface LoginBaseRequest {
+type LoginBaseRequest = {
 	params: Record<string, never>;
 	body: UserCredentials;
-}
+};
 
 export type {
 	UpdateProfileInfoBaseRequest,
