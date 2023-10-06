@@ -1,5 +1,6 @@
 import { type Document, type Types } from 'mongoose';
 import { type Timestamps } from '../mongoose.types';
+import { type PopulatedUser } from './user.types';
 
 type CardInput = {
 	name: string;
@@ -8,10 +9,11 @@ type CardInput = {
 
 type CardData = CardInput &
 	Timestamps & {
-		likes: Types.ObjectId[];
-		owner: Types.ObjectId;
+		likes: PopulatedUser[];
+		owner: string | Types.ObjectId;
+		_id: string;
 	};
 
-type CardDocument = Document<Types.ObjectId | string> & CardData;
+type CardDocument = Document<Types.ObjectId> & CardData;
 
 export type { CardInput, CardData, CardDocument };

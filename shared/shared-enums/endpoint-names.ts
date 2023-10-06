@@ -13,7 +13,9 @@ const enum AppMutationEndpointName {
 	'updateProfileInfo' = 'updateProfileInfo',
 	'likeCard' = 'likeCard',
 	'unlikeCard' = 'unlikeCard',
-	'login' = 'login',
+	'logIn' = 'logIn',
+	'logOut' = 'logOut',
+	'toggleLike' = 'toggleLike',
 }
 
 type AppRequestEndpointName = AppMutationEndpointName | AppQueryEndpointName;

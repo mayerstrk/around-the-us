@@ -1,5 +1,5 @@
 import { type RequestHandler } from 'express-serve-static-core';
-import { type AppRequest } from '@shared/shared-types/requests/app-request.types';
+import { type AppExpressRequest } from '@shared/shared-types/requests/app-express-request.types';
 import {
 	type AppMutationEndpointName,
 	type AppQueryEndpointName,
@@ -32,7 +32,7 @@ import {
  *    Inside the generated controller function, the provided `controllerHelper` is
  *    called. This helper function contains the core logic for handling the
  *    specific endpoint. It's executed with the `request` and `response` objects.
- *    Here, the request object is cast to the `AppRequest<N>` type to ensure it's
+ *    Here, the request object is cast to the `AppExpressRequest<N>` type to ensure it's
  *    of the expected shape and structure. This type casting is achieved through
  *    TypeScript generics, allowing for a flexible yet strongly-typed request
  *    object that can differ depending on the endpoint.
@@ -61,10 +61,15 @@ const controllerBuilder = {
 			try {
 				let data;
 				({ request, response, data } = await controllerHelper(
-					request as AppRequest<N>,
+					request as AppExpressRequest<N>,
 					response,
 				));
-
+				console.log('==================SENDING DATA====================');
+				console.log(request.path, '-', request.method);
+				console.log('');
+				console.log(JSON.stringify(data));
+				console.log('==================================================');
+				console.log('');
 				response.status(Status.ok).send({ data });
 			} catch (error) {
 				next(error);
@@ -78,7 +83,7 @@ const controllerBuilder = {
 			try {
 				let data;
 				({ request, response, data } = await controllerHelper(
-					request as AppRequest<N>,
+					request as AppExpressRequest<N>,
 					response,
 				));
 

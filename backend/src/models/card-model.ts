@@ -2,6 +2,8 @@ import { Schema, model } from 'mongoose';
 import validator from 'validator';
 import { type CardDocument } from '@shared/shared-types/resources/card.types';
 
+const cardPopulateOptions = { path: 'likes', select: ' email _id name about' };
+
 const cardSchema = new Schema<CardDocument>(
 	{
 		name: {
@@ -20,13 +22,17 @@ const cardSchema = new Schema<CardDocument>(
 		owner: {
 			type: Schema.Types.ObjectId,
 			required: true,
+			ref: 'User',
 		},
-		likes: [
-			{
-				type: Schema.Types.ObjectId,
-				default: [],
-			},
-		],
+		likes: {
+			type: [
+				{
+					type: Schema.Types.ObjectId,
+					ref: 'User',
+				},
+			],
+			default: [],
+		},
 		createdAt: {
 			type: Date,
 			default: Date.now(),
@@ -34,6 +40,14 @@ const cardSchema = new Schema<CardDocument>(
 	},
 	{ timestamps: true },
 );
+
+cardSchema.pre('find', function () {
+	void this.populate(cardPopulateOptions);
+});
+
+cardSchema.pre('findOne', function () {
+	void this.populate(cardPopulateOptions);
+});
 
 const CardModel = model<CardDocument>('Card', cardSchema);
 

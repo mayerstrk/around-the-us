@@ -10,24 +10,40 @@ type UserDetails = {
 	about: string;
 };
 
-type UserInput = UserDetails & {
+type UserAvatar = {
 	avatar: string;
 };
+
+type UserInput = UserDetails & UserAvatar;
 
 type UserCredentials = {
 	email: string;
 	password: string;
 };
 
-type UserData = UserInput & UserCredentials & Timestamps;
+type UserData = UserInput &
+	UserCredentials &
+	Timestamps & { _id: string; __v: number };
 
-type UserDocument = Document<Types.ObjectId | string> & UserData;
+type UserDataWithoutPassword = Omit<UserData, 'password'>;
+
+type PopulatedUser = {
+	_id: string;
+	email: string;
+	name: string;
+	about: string;
+};
+
+type UserDocument = Document<Types.ObjectId> & UserData;
 
 export type {
 	RequestUser,
 	UserDetails,
+	UserAvatar,
 	UserInput,
 	UserCredentials,
 	UserData,
+	PopulatedUser,
+	UserDataWithoutPassword,
 	UserDocument,
 };

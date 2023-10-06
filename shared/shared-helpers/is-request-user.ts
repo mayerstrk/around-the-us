@@ -5,7 +5,7 @@ function isRequestUser(value: unknown): value is RequestUser {
 
 	const keys = Object.keys(value);
 	return (
-		keys.length === 1 &&
+		keys.length === 3 &&
 		keys[0] === '_id' &&
 		typeof (value as any)._id === 'string'
 	);

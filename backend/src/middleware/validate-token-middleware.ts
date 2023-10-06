@@ -1,10 +1,9 @@
 import process from 'node:process';
-import { type RequestHandler } from 'express';
+import { type Request, type RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 import { ErrorName } from '@shared/shared-enums/error-names';
 import safe from '@shared/shared-helpers/safe';
 import { isRequestUser } from '@shared/shared-helpers/is-request-user';
-import { Status } from '../../../shared/shared-enums/status';
 
 const validateTokenMiddleware: RequestHandler = async (
 	request,
@@ -25,7 +24,7 @@ const validateTokenMiddleware: RequestHandler = async (
 			typeguard: isRequestUser,
 		});
 
-		request.user = decoded;
+		(request as Request & { user: { _id: string } }).user = decoded;
 		next();
 	} catch (error) {
 		next(error);

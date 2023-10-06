@@ -1,0 +1,11 @@
+.main {
+	display: flex;
+	flex-grow: 1;
+	flex-direction: column;
+}
+
+@media screen and (max-width: 768px) {
+  .main {
+    padding: 0 19px 0;
+  }
+}

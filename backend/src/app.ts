@@ -4,6 +4,7 @@ import express from 'express';
 import { connect } from 'mongoose';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import { Status } from '../../shared/shared-enums/status';
 import protectedRoutes from './routes/protected-routes';
 import publicRoutes from './routes/public-routes';
@@ -23,16 +24,21 @@ console.log(process.env.NODE_ENV);
 const { PORT = 1000 } = process.env;
 const app = express();
 
+app.use(
+	cors({
+		origin: ['http://localhost:5173', 'http://localhost:4173'],
+		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+		credentials: true,
+		optionsSuccessStatus: 204,
+	}),
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
 
 connect('mongodb://127.0.0.1:27017/aroundb-test')
 	.then(() => {
-		app.use((request, _response, next) => {
-			next();
-		});
-
 		app.use('/', publicRoutes);
 
 		app.use('/', validateTokenMiddleware);

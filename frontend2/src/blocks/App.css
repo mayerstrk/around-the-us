@@ -1,0 +1,34 @@
+@keyframes slide {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.app {
+  background:  #191919;
+	display: flex;
+  min-height: 100vh;
+}
+
+.app__process-loading-bar {
+    width: 100%;
+    height: 3px; /* You can adjust this for the desired height */
+    background-color: transparent;
+    position: fixed; /* This will fix it to the top */
+    top: 0;          /* This sets it at the very top of the page */
+    left: 0;
+    z-index: 1000;   /* This ensures it appears above other elements */
+    overflow: hidden;
+}
+
+.app__process-loading-bar::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 50%; /* The width of the moving bar, adjust if needed */
+    background-color: white;
+    animation: slide 1s infinite; /* Adjust timing if needed */
+}

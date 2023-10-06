@@ -31,7 +31,7 @@ const getCardsController = controllerBuilder.query({
 
 // === Create card ===
 
-const createCardControllerHelper: MutationControllerHelper<
+const addCardControllerHelper: MutationControllerHelper<
 	AppMutationEndpointName.addCard
 > = async (request, response) => {
 	const { body, user } = request;
@@ -44,8 +44,8 @@ const createCardControllerHelper: MutationControllerHelper<
 	return { request, response, data };
 };
 
-const createCardController = controllerBuilder.mutation({
-	controllerHelper: createCardControllerHelper,
+const addCardController = controllerBuilder.mutation({
+	controllerHelper: addCardControllerHelper,
 });
 
 // === Like card ===
@@ -61,7 +61,9 @@ const likeCardControllerHelper: MutationControllerHelper<
 			cardId,
 			{ $addToSet: { likes: user._id } },
 			{ new: true, runValidators: true },
-		),
+		)
+			.populate('likes')
+			.orFail(),
 		errorMessage: 'Failed to add a like to the specified card.',
 		errorName: ErrorName.internalServerError,
 		async: true,
@@ -87,7 +89,9 @@ const unlikeCardControllerHelper: MutationControllerHelper<
 			cardId,
 			{ $pull: { likes: user._id } },
 			{ new: true },
-		),
+		)
+			.populate('likes')
+			.orFail(),
 		errorMessage: 'Failed to remove a like from the specified card.',
 		errorName: ErrorName.internalServerError,
 		async: true,
@@ -122,7 +126,7 @@ const deleteCardController = controllerBuilder.mutation({
 
 export {
 	getCardsController,
-	createCardController,
+	addCardController,
 	likeCardController,
 	unlikeCardController,
 	deleteCardController,

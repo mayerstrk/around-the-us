@@ -1,7 +1,4 @@
-import {
-	CastError,
-	ValidationError,
-} from '../shared-classes/shared-custom-errors';
+import { CastError, ValidationError } from '../shared-classes/custom-errors';
 import { type ErrorName } from '../shared-enums/error-names';
 import getErrorConstructor from './get-error-constructor';
 
@@ -78,12 +75,8 @@ async function safe<V, R extends V>(configuration: SafeConfig<V, R>) {
 	} = configuration;
 
 	let resolvedValue;
-
-	console.log('Async flag value:', async);
-
 	if (async) {
 		try {
-			console.log('async');
 			resolvedValue = await value;
 		} catch (error) {
 			const ErrorConstructor = getErrorConstructor(errorName);
@@ -92,8 +85,6 @@ async function safe<V, R extends V>(configuration: SafeConfig<V, R>) {
 	} else {
 		resolvedValue = value as NonNullable<V>;
 	}
-
-	console.log('not async');
 
 	if (resolvedValue === null || resolvedValue === undefined) {
 		throw new CastError(`${errorMessage} - Value is null or undefined`);
@@ -105,7 +96,7 @@ async function safe<V, R extends V>(configuration: SafeConfig<V, R>) {
 		}
 
 		throw new ValidationError(
-			`Validation failed for value: ${String(resolvedValue)}`,
+			`Validation failed for value: ${JSON.stringify(resolvedValue)}`,
 		);
 	}
 
@@ -115,7 +106,7 @@ async function safe<V, R extends V>(configuration: SafeConfig<V, R>) {
 		}
 
 		throw new CastError(
-			`Type guard failed for value: ${String(resolvedValue)}`,
+			`Type guard failed for value: ${JSON.stringify(resolvedValue)}`,
 		);
 	}
 

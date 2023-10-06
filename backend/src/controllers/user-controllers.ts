@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import safe from '@shared/shared-helpers/safe';
 import { ErrorName } from '@shared/shared-enums/error-names';
-import { isRequestUser } from '@shared/shared-helpers/is-request-user';
 import controllerBuilder from '../builders/controller-builder/controller-builder';
 import {
 	type AppMutationEndpointName,
@@ -40,7 +39,7 @@ const getUserControllerHelper: QueryControllerHelper<
 	AppQueryEndpointName.getUser
 > = async (request, response) => {
 	const {
-		params: { userId },
+		user: { _id: userId },
 	} = request;
 
 	const data = await safe({
@@ -73,7 +72,7 @@ const createUserControllerHelper: MutationControllerHelper<
 		errorName: ErrorName.authentication,
 	});
 
-	const data = await safe({
+	const user = await safe({
 		value: UserModel.create({
 			email,
 			password: hashedPassword,
@@ -83,7 +82,23 @@ const createUserControllerHelper: MutationControllerHelper<
 		errorName: ErrorName.authentication,
 	});
 
-	return { request, response, data };
+	const token = await safe({
+		value: jwt.sign({ _id: user._id }, process.env.JWT_SECRET!, {
+			expiresIn: '7d',
+		}),
+		async: true,
+		errorMessage: 'Error creating token',
+		errorName: ErrorName.authentication,
+	});
+
+	response.cookie('token', token, {
+		httpOnly: true,
+		secure: process.env.NODE_ENV === 'production',
+		sameSite: 'strict',
+		signed: true,
+	});
+
+	return { request, response, data: { message: 'User created successfuly' } };
 };
 
 const createUserController = controllerBuilder.mutation({
@@ -92,8 +107,8 @@ const createUserController = controllerBuilder.mutation({
 
 // === Log in ===
 
-const loginControllerHelper: MutationControllerHelper<
-	AppMutationEndpointName.login
+const logInControllerHelper: MutationControllerHelper<
+	AppMutationEndpointName.logIn
 > = async (request, response) => {
 	const {
 		body: { email, password },
@@ -134,13 +149,13 @@ const loginControllerHelper: MutationControllerHelper<
 		request,
 		response,
 		data: {
-			message: 'Logged in successfully',
+			message: 'User logged in successfuly',
 		},
 	};
 };
 
-const loginController = controllerBuilder.mutation({
-	controllerHelper: loginControllerHelper,
+const logInController = controllerBuilder.mutation({
+	controllerHelper: logInControllerHelper,
 });
 
 // === Validate Token ===
@@ -148,28 +163,42 @@ const loginController = controllerBuilder.mutation({
 const validateTokenControllerHelper: QueryControllerHelper<
 	AppQueryEndpointName.validateToken
 > = async (request, response) => {
-	const token = await safe({
-		value: request.signedCookies?.token as string | undefined,
-		errorMessage: 'No token provided',
-		errorName: ErrorName.authentication,
-	});
+	console.log('request.user._id: ' + request.user._id);
 
-	const decoded = await safe({
-		value: jwt.verify(token, process.env.JWT_SECRET!),
-		errorMessage: 'Invalid token format.',
-		errorName: ErrorName.authentication,
-		typeguard: isRequestUser,
+	const user = await safe({
+		value: UserModel.findById(request.user._id),
+		async: true,
+		errorMessage: 'Invalid user ID',
+		errorName: ErrorName.notFound,
 	});
 
 	return {
 		request,
 		response,
-		data: decoded,
+		data: user,
 	};
 };
 
 const validateTokenController = controllerBuilder.query({
 	controllerHelper: validateTokenControllerHelper,
+});
+
+// === Log out ===
+
+const logOutControllerHelper: MutationControllerHelper<
+	AppMutationEndpointName.logOut
+> = async (request, response) => {
+	response.clearCookie('token');
+
+	return {
+		request,
+		response,
+		data: { message: 'User logged out successfuly' },
+	};
+};
+
+const logOutController = controllerBuilder.mutation({
+	controllerHelper: logOutControllerHelper,
 });
 
 // === Update profile info ===
@@ -224,7 +253,8 @@ export {
 	getUsersController,
 	getUserController,
 	createUserController,
-	loginController,
+	logInController,
+	logOutController,
 	updateProfileInfoController,
 	updateAvatarController,
 	validateTokenController,

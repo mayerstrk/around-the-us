@@ -1,30 +1,12 @@
-import { Schema, model, type Document, type Model, type Types } from 'mongoose';
+import { Schema, model, type Model } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import { ErrorName } from '@shared/shared-enums/error-names';
-
-interface UserInput {
-	name: string;
-	about: string;
-	avatar: string;
-}
-
-interface UserCredentials {
-	email: string;
-	password: string;
-}
-
-type UserData = UserInput & UserCredentials;
-
-interface Timestamps {
-	createdAt: Date;
-	updatedAt: Date;
-}
-
-type UserDocument = Document<Types.ObjectId | string> & UserData & Timestamps;
+import { type UserDocument } from '@shared/shared-types/resources/user.types';
 
 interface IUserModel extends Model<UserDocument> {
 	findUserByCredentials(email: string, password: string): Promise<UserDocument>;
+	findUserEmailById(id: string): Promise<{ email: string }>;
 }
 
 const userSchema = new Schema<UserDocument, IUserModel>(
@@ -75,6 +57,16 @@ const userSchema = new Schema<UserDocument, IUserModel>(
 	{ timestamps: true },
 );
 
+userSchema.static('findUserEmailById', async function (id: string): Promise<{
+	email: string;
+}> {
+	const user = await this.findById(id).orFail({
+		message: 'Invalid user ID',
+		name: ErrorName.notFound,
+	});
+	return { email: user.email };
+});
+
 userSchema.static(
 	'findUserByCredentials',
 	async function (email: string, password: string): Promise<UserDocument> {
@@ -97,4 +89,4 @@ userSchema.static(
 
 const UserModel = model<UserDocument, IUserModel>('User', userSchema);
 
-export { type UserInput, type UserDocument, UserModel };
+export { UserModel };

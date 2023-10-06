@@ -4,22 +4,22 @@ import {
 	type AppQueryEndpointName,
 	type AppRequestEndpointName,
 } from '@shared/shared-enums/endpoint-names';
-import { type AppRequest } from '@shared/shared-types/requests/app-request.types';
-import { type AppResponseDictonary } from '@shared/shared-types/requests/app-response-dictionaries.types';
+import { type AppExpressRequest } from '@shared/shared-types/requests/app-express-request.types';
+import { type AppResponsePayloadDictionary } from '@shared/shared-types/requests/app-response-payload-dictionaries.types';
 
 interface ControllerHelperResult<N extends AppRequestEndpointName> {
-	request: AppRequest<N>;
+	request: AppExpressRequest<N>;
 	response: Response;
-	data: AppResponseDictonary[N]['body'];
+	data: AppResponsePayloadDictionary[N];
 }
 
 type QueryControllerHelper<N extends AppQueryEndpointName> = (
-	request: AppRequest<N>,
+	request: AppExpressRequest<N>,
 	response: Response,
 ) => Promise<ControllerHelperResult<N>>;
 
 type MutationControllerHelper<N extends AppMutationEndpointName> = (
-	request: AppRequest<N>,
+	request: AppExpressRequest<N>,
 	response: Response,
 ) => Promise<ControllerHelperResult<N>>;
 

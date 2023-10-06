@@ -7,7 +7,7 @@ import {
 	AuthenticationError,
 	AuthorizationError,
 	type AppCustomErrorConstructor,
-} from '../shared-classes/shared-custom-errors';
+} from '../shared-classes/custom-errors';
 
 function getErrorConstructor(errorName: ErrorName): AppCustomErrorConstructor {
 	switch (errorName) {
