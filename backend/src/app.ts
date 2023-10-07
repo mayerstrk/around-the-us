@@ -23,7 +23,7 @@ if (result.error) {
 
 console.log(process.env.NODE_ENV);
 
-const { PORT = 1000 } = process.env;
+const { PORT = 3001 } = process.env;
 const app = express();
 
 app.use(
