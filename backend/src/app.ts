@@ -5,11 +5,13 @@ import { connect } from 'mongoose';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import { errors as celebrateValidator } from 'celebrate';
 import { Status } from '../../shared/shared-enums/status';
 import protectedRoutes from './routes/protected-routes';
 import publicRoutes from './routes/public-routes';
 import validateTokenMiddleware from './middleware/validate-token-middleware';
 import errorHandlerMiddleware from './middleware/error-handler-middleware';
+import { requestLogger, errorLogger } from './middleware/logger';
 
 // eslint-disable-next-line unicorn/prefer-module
 const envPath = path.resolve(__dirname, '../.env'); // Adjust the '../.env' part if your .env file is located elsewhere
@@ -39,6 +41,8 @@ app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
 
 connect('mongodb://127.0.0.1:27017/aroundb-test')
 	.then(() => {
+		app.use(requestLogger);
+
 		app.use('/', publicRoutes);
 
 		app.use('/', validateTokenMiddleware);
@@ -52,6 +56,10 @@ connect('mongodb://127.0.0.1:27017/aroundb-test')
 		app.use((_request, response) => {
 			response.status(Status.notFound).send('Page Not Found');
 		});
+
+		app.use(errorLogger);
+
+		app.use('/', celebrateValidator());
 
 		app.use('/', errorHandlerMiddleware);
 

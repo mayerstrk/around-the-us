@@ -16,6 +16,8 @@ const inputsArray: AppFormInputs = [
 		id: 'input-log-in-email',
 		name: InputName.logInEmail,
 		placeholder: 'Email',
+		maxLength: 30,
+		minLength: 2,
 	},
 	{
 		required: true,
@@ -23,6 +25,7 @@ const inputsArray: AppFormInputs = [
 		id: 'input-log-in-password',
 		name: InputName.logInPassword,
 		placeholder: 'Password',
+		minLength: 8,
 	},
 ];
 
