@@ -1,5 +1,7 @@
 import process from 'node:process';
 import path from 'node:path';
+import { readFileSync } from 'node:fs';
+import https from 'node:https';
 import express from 'express';
 import { connect } from 'mongoose';
 import cookieParser from 'cookie-parser';
@@ -39,33 +41,38 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
 
+app.use(requestLogger);
+
+app.use('/', publicRoutes);
+
+app.use('/', validateTokenMiddleware);
+
+app.use('/', protectedRoutes);
+
+app.use((_request, response) => {
+	response.status(Status.notFound);
+});
+
+app.use((_request, response) => {
+	response.status(Status.notFound).send('Page Not Found');
+});
+
+app.use(errorLogger);
+
+app.use('/', celebrateValidator());
+
+app.use('/', errorHandlerMiddleware);
+
+const privateKey = readFileSync('./certs/privatekey.pem', 'utf8');
+const certificate = readFileSync('./certs/certificate.pem', 'utf8');
+const credentials = { key: privateKey, cert: certificate };
+const httpsServer = https.createServer(credentials, app);
+
 connect('mongodb://127.0.0.1:27017/aroundb-test')
 	.then(() => {
-		app.use(requestLogger);
-
-		app.use('/', publicRoutes);
-
-		app.use('/', validateTokenMiddleware);
-
-		app.use('/', protectedRoutes);
-
-		app.use((_request, response) => {
-			response.status(Status.notFound);
-		});
-
-		app.use((_request, response) => {
-			response.status(Status.notFound).send('Page Not Found');
-		});
-
-		app.use(errorLogger);
-
-		app.use('/', celebrateValidator());
-
-		app.use('/', errorHandlerMiddleware);
-
-		app.listen(PORT, () => {
+		httpsServer.listen(PORT, () => {
 			console.log(
-				`Listening on port = ${PORT}.\n URL: http://localhost:${PORT}`,
+				`HTTPS Server running on port ${PORT}. URL: https://localhost:${PORT}`,
 			);
 		});
 	})
