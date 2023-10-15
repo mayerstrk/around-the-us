@@ -93,8 +93,7 @@ const createUserControllerHelper: MutationControllerHelper<
 
 	response.cookie('token', token, {
 		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		sameSite: 'strict',
+		sameSite: 'none',
 		signed: true,
 	});
 
@@ -140,8 +139,7 @@ const logInControllerHelper: MutationControllerHelper<
 
 	response.cookie('token', token, {
 		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		sameSite: 'strict',
+		sameSite: 'none',
 		signed: true,
 	});
 

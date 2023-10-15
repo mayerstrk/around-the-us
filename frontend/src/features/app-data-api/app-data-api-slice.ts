@@ -19,7 +19,7 @@ import { setErrorMessage } from '../error/error-slice';
 export const appDataApiSlice = createApi({
 	reducerPath: 'appDataApi',
 	baseQuery: fetchBaseQuery({
-		baseUrl: 'http://34.165.7.244:3001',
+		baseUrl: 'https://34.165.7.244:3001',
 		credentials: 'include',
 	}),
 	tagTypes: ['User', 'Cards', 'Authorized'],
