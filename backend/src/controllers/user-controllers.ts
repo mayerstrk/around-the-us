@@ -124,9 +124,9 @@ const logInControllerHelper: MutationControllerHelper<
 	await safe({
 		value: bcrypt.compare(password, user.password),
 		async: true,
-		test: (isMatch) => isMatch,
 		errorMessage: 'Invalid email or password',
 		errorName: ErrorName.authentication,
+		test: (isMatch) => isMatch,
 	});
 
 	const token = await safe({

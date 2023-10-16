@@ -75,14 +75,25 @@ class AuthenticationError extends CustomError {
 class AuthorizationError extends CustomError {
 	constructor(message: string, originalError?: Error) {
 		super(
-			message || 'You are not authorized to perform this action.',
-			Status.forbidden,
+			message || 'This action requires authorizaion.',
+			Status.unauthorized,
 			ErrorName.authorization,
 			originalError,
 		);
 	}
 }
 
+class ForbiddenError extends CustomError {
+	constructor(message: string, originalError?: Error) {
+		super(
+			message ||
+				"You don't have the neccesary permissions to perfom this action.",
+			Status.forbidden,
+			ErrorName.forbidden,
+			originalError,
+		);
+	}
+}
 class InternalServerError extends CustomError {
 	constructor(message: string, originalError?: Error) {
 		super(
@@ -106,6 +117,7 @@ type AppCustomErrorConstructor =
 export type { AppCustomErrorConstructor };
 
 export {
+	ForbiddenError,
 	CustomError,
 	ValidationError,
 	NotFoundError,

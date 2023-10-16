@@ -5,6 +5,8 @@ import getErrorConstructor from './get-error-constructor';
 type NeitherOption = {
 	test?: never;
 	typeguard?: never;
+	testErrorMessage?: never;
+	testErrorName?: never;
 };
 
 type SafeConfig<V, R extends V = V> = {
@@ -13,8 +15,18 @@ type SafeConfig<V, R extends V = V> = {
 	errorMessage: string;
 	errorName: ErrorName;
 } & (
-	| { typeguard: (value: V) => value is R; test?: never }
-	| { test: (value: V) => boolean; typeguard?: never }
+	| {
+			typeguard: (value: NonNullable<V>) => value is NonNullable<R>;
+			test?: never;
+			testErrorMessage?: never;
+			testErrorName?: never;
+	  }
+	| {
+			test: (value: NonNullable<V>) => boolean;
+			testErrorMessage?: string | undefined;
+			testErrorName?: ErrorName | undefined;
+			typeguard?: never;
+	  }
 	| NeitherOption
 );
 
@@ -71,6 +83,8 @@ async function safe<V, R extends V>(configuration: SafeConfig<V, R>) {
 		errorMessage,
 		errorName,
 		test,
+		testErrorMessage,
+		testErrorName,
 		typeguard,
 	} = configuration;
 
@@ -79,8 +93,8 @@ async function safe<V, R extends V>(configuration: SafeConfig<V, R>) {
 		try {
 			resolvedValue = await value;
 		} catch (error) {
-			const ErrorConstructor = getErrorConstructor(errorName);
-			throw new ErrorConstructor(errorMessage, error as Error);
+			const SelectedError = getErrorConstructor(errorName);
+			throw new SelectedError(errorMessage, error as Error);
 		}
 	} else {
 		resolvedValue = value as NonNullable<V>;
@@ -95,9 +109,16 @@ async function safe<V, R extends V>(configuration: SafeConfig<V, R>) {
 			return resolvedValue;
 		}
 
-		throw new ValidationError(
-			`Validation failed for value: ${JSON.stringify(resolvedValue)}`,
-		);
+		const _errorMessage = `Validation failed (${
+			testErrorMessage ?? 'reason unspecified'
+		}) for value: ${JSON.stringify(resolvedValue)}`;
+
+		if (testErrorName) {
+			const SelectedError = getErrorConstructor(testErrorName);
+			throw new SelectedError(_errorMessage);
+		}
+
+		throw new ValidationError(_errorMessage);
 	}
 
 	if (typeguard) {

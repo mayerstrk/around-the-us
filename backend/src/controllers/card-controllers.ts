@@ -18,9 +18,9 @@ const getCardsControllerHelper: QueryControllerHelper<
 > = async (request, response) => {
 	const data = await safe({
 		value: CardModel.find({}),
+		async: true,
 		errorMessage: 'Failed to retrieve cards from the database.',
 		errorName: ErrorName.notFound,
-		async: true,
 	});
 	return { request, response, data };
 };
@@ -111,13 +111,25 @@ const deleteCardControllerHelper: MutationControllerHelper<
 	const {
 		params: { cardId },
 	} = request;
-	const data = await safe({
-		value: CardModel.findByIdAndDelete(cardId),
-		errorMessage: 'Failed to delete the specified card from the database.',
-		errorName: ErrorName.internalServerError,
+
+	const card = await safe({
+		value: CardModel.findById(cardId),
 		async: true,
+		errorMessage: "Couldn't find card with specified id.",
+		errorName: ErrorName.notFound,
+		test: (card) => card.owner === request.user._id,
+		testErrorMessage: "Deletion of other user's posts is not allowed.",
+		testErrorName: ErrorName.forbidden,
 	});
-	return { request, response, data };
+
+	const deletedCard = await safe({
+		value: card.deleteOne(),
+		async: true,
+		errorMessage: 'Failed to delete the specified card.',
+		errorName: ErrorName.internalServerError,
+	});
+
+	return { request, response, data: deletedCard };
 };
 
 const deleteCardController = controllerBuilder.mutation({
