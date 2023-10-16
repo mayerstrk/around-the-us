@@ -135,7 +135,7 @@ const logInControllerHelper: MutationControllerHelper<
 		}),
 		async: true,
 		errorMessage: 'Error creating token',
-		errorName: ErrorName.authentication,
+		errorName: ErrorName.internalServerError,
 	});
 
 	response.cookie('token', token, {
