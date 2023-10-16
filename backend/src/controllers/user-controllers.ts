@@ -69,7 +69,7 @@ const createUserControllerHelper: MutationControllerHelper<
 		value: bcrypt.hash(password, 10),
 		async: true,
 		errorMessage: 'Error hashing password',
-		errorName: ErrorName.authentication,
+		errorName: ErrorName.internalServerError,
 	});
 
 	const user = await safe({
@@ -79,7 +79,7 @@ const createUserControllerHelper: MutationControllerHelper<
 		}),
 		async: true,
 		errorMessage: 'Error creating user',
-		errorName: ErrorName.authentication,
+		errorName: ErrorName.internalServerError,
 	});
 
 	const token = await safe({
@@ -87,8 +87,8 @@ const createUserControllerHelper: MutationControllerHelper<
 			expiresIn: '7d',
 		}),
 		async: true,
-		errorMessage: 'Error creating token',
-		errorName: ErrorName.authentication,
+		errorMessage: 'Error signing token',
+		errorName: ErrorName.internalServerError,
 	});
 
 	response.cookie('token', token, {
