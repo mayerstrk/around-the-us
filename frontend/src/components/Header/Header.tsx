@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { RoutesPaths } from '../../utills';
+import { RoutesPaths } from '../../utils';
 import { useAppSelector } from '../../hooks/hooks-redux';
 import { useLogOutMutation } from '../../features/app-data-api/app-data-api-slice';
 import ProcessLoadingBar from '../ProcessLoadingBar/ProcessLoadingBar';

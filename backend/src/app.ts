@@ -63,9 +63,10 @@ app.use('/', celebrateValidator());
 
 app.use('/', errorHandlerMiddleware);
 
+const certificate = readFileSync('./certs/cert.pem', 'utf8');
 const privateKey = readFileSync('./certs/privatekey.pem', 'utf8');
-const certificate = readFileSync('./certs/certificate.pem', 'utf8');
-const credentials = { key: privateKey, cert: certificate };
+const passphrase = process.env.PASSPHRASE;
+const credentials = { key: privateKey, cert: certificate, passphrase };
 const httpsServer = https.createServer(credentials, app);
 
 connect('mongodb://127.0.0.1:27017/aroundb-test')

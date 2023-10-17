@@ -4,7 +4,7 @@ import {
 	type ChangeEvent,
 } from 'react';
 import { Link } from 'react-router-dom';
-import { type RoutesPaths } from '../../utills';
+import { type RoutesPaths } from '../../utils';
 import { type InputValues, type InputName } from '../../hooks/hooks-form';
 
 interface AppFormProps {

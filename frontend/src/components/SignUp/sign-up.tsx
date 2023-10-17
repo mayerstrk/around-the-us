@@ -4,7 +4,7 @@ import {
 	toggledLogInErrorPopupVisibility,
 	toggledRegisterSuccessPopupVisibility,
 } from '../../features/popups/popups-visibility-slice';
-import { RoutesPaths } from '../../utills';
+import { RoutesPaths } from '../../utils';
 import { InputName, useForm } from '../../hooks/hooks-form';
 import { useAppDispatch } from '../../hooks/hooks-redux';
 import AppForm, { type AppFormInputs } from '../AppForm/AppForm';

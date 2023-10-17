@@ -1,7 +1,7 @@
 enum RoutesPaths {
 	home = '/',
-	logIn = '/logIn',
-	signUp = '/signUp',
+	logIn = '/signin',
+	signUp = '/signup',
 }
 function isSuccessCode(status: number) {
 	if (status >= 200 && status < 300) {

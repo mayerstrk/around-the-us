@@ -1,4 +1,4 @@
-import { RoutesPaths } from '../../../utills';
+import { RoutesPaths } from '../../../utils';
 import Home from '../../Home/Home';
 import ProtectedComponent from '../ProtectedComponent';
 

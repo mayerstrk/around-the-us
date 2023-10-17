@@ -1,6 +1,7 @@
 /* React-specific entry point that automatically generates
    hooks corresponding to the defined endpoints */
 
+import process from 'node:process';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
 	type AppMutationEndpointName,
@@ -16,10 +17,15 @@ import {
 import { userFetched, userLoggedOut } from '../current-user/current-user-slice';
 import { setErrorMessage } from '../error/error-slice';
 
+const baseUrl =
+	process.env.NODE_ENV === 'production'
+		? 'https://34.165.7.244:3001'
+		: 'https://localhost:3001';
+
 export const appDataApiSlice = createApi({
 	reducerPath: 'appDataApi',
 	baseQuery: fetchBaseQuery({
-		baseUrl: 'https://34.165.7.244:3001',
+		baseUrl,
 		credentials: 'include',
 	}),
 	tagTypes: ['User', 'Cards', 'Authorized'],

@@ -7,7 +7,7 @@ import App from './components/App/App';
 import './index.css'; // eslint-disable-line n/file-extension-in-import
 import LogIn from './components/LogIn/log-in';
 import SignUp from './components/SignUp/sign-up';
-import { RoutesPaths } from './utills';
+import { RoutesPaths } from './utils';
 import ProtectedHome from './components/ProtectedComponent/instances/ProtectedHome';
 
 const router = createBrowserRouter([
