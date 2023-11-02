@@ -1,6 +1,6 @@
 import {
 	PopupName,
-	toggledRegisterSuccessPopupVisibility,
+	toggledSignUpSuccessPopupVisibility,
 } from '../../features/popups/popups-visibility-slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks-redux';
 import Popup from '../Popup/Popup';
@@ -15,7 +15,7 @@ function RegisterSuccessPopup() {
 		<Popup
 			name={PopupName.signUpSuccess}
 			isOpen={isOpen}
-			onClose={() => dispatch(toggledRegisterSuccessPopupVisibility())}
+			onClose={() => dispatch(toggledSignUpSuccessPopupVisibility())}
 		>
 			<img
 				src={signUpSuccessImage}

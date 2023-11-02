@@ -11,7 +11,7 @@ import {
 	toggleEditAvatarPopupVisibility,
 } from '../../features/popups/popups-visibility-slice';
 import addButton from './profile-info-images/add-button.svg'; // eslint-disable-line n/file-extension-in-import
-import ProfileInfoSkeleton from './ProfileInfoSkeleton/ProfileInfoSkeleton';
+import ProfileInfoSkeleton from './ProfileInfoSkeleton/profile-info-skeleton';
 
 function ProfileInfo({ children }: { children: ReactNode }) {
 	const { data: user, isLoading, isError, isSuccess } = useGetUserQuery();

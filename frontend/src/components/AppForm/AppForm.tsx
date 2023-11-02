@@ -87,6 +87,7 @@ function FormInput({ options, formType, values, onChange }: FormInputProps) {
 				type={options.type}
 				id={options.id}
 				name={options.name}
+				autoComplete={options.autoComplete}
 				className={`form__input form__input_type_${formType} ${options.className}`}
 				placeholder={options.placeholder}
 				required={options.required}
@@ -95,6 +96,7 @@ function FormInput({ options, formType, values, onChange }: FormInputProps) {
 				value={values[options.name] || ''}
 				onChange={onChange}
 			/>
+			<span className={`form__error`}>.</span>
 		</div>
 	);
 }

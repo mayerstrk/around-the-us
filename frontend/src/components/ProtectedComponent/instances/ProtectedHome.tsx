@@ -1,12 +1,12 @@
 import { RoutesPaths } from '../../../utils';
 import Home from '../../Home/Home';
-import ProtectedComponent from '../ProtectedComponent';
+import ProtectedComponent from '../protected-component';
 
 function ProtectedHome() {
 	return (
 		console.log('ProtectedHome rendered'),
 		(
-			<ProtectedComponent fallback={RoutesPaths.logIn}>
+			<ProtectedComponent fallback={RoutesPaths.signIn}>
 				<Home />
 			</ProtectedComponent>
 		)

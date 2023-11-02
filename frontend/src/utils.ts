@@ -1,6 +1,6 @@
 enum RoutesPaths {
 	home = '/',
-	logIn = '/signin',
+	signIn = '/signin',
 	signUp = '/signup',
 }
 function isSuccessCode(status: number) {

@@ -13,7 +13,7 @@ const enum AppMutationEndpointName {
 	'updateProfileInfo' = 'updateProfileInfo',
 	'likeCard' = 'likeCard',
 	'unlikeCard' = 'unlikeCard',
-	'logIn' = 'logIn',
+	'signIn' = 'signIn',
 	'logOut' = 'logOut',
 	'toggleLike' = 'toggleLike',
 }

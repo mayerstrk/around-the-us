@@ -1,8 +1,8 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { type UnknownAsyncThunkRejectedAction } from '@reduxjs/toolkit/dist/matchers';
-import { type ExpectedActionPayload } from './error-middleware';
+import { type ExpectedRejectedActionPayload } from './error-middleware';
 
 const initialState = {
+	globalErrorMessage: '',
 	message: '',
 	clicked: false,
 };
@@ -14,20 +14,19 @@ const errorSlice = createSlice({
 		setErrorMessage(state, { payload }: PayloadAction<string>) {
 			state.message = payload;
 		},
-		setErrorMessageFromError(
+		setGlobalErrorPopupMessageFromError(
 			state,
-			action: PayloadAction<
-				UnknownAsyncThunkRejectedAction & { payload: ExpectedActionPayload }
-			>,
+			action: PayloadAction<ExpectedRejectedActionPayload>,
 		) {
-			state.message = `Error ${action.payload.payload.status} - (${
-				action.payload.error.message
-			}) ${action.payload.payload.data?.name ?? ''} - ${
-				action.payload.payload.data?.message ?? action.payload.payload.error
+			state.message = `Error ${action.payload.status} - (${
+				action.payload.data.message
+			}) ${action.payload.data.name} - ${
+				action.payload.data.message ?? action.payload.error
 			}`;
 		},
 	},
 });
 
-export const { setErrorMessage, setErrorMessageFromError } = errorSlice.actions;
+export const { setErrorMessage, setGlobalErrorPopupMessageFromError } =
+	errorSlice.actions;
 export default errorSlice.reducer;

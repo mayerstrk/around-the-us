@@ -6,8 +6,8 @@ const enum InputName {
 	cardName = 'cardName',
 	cardLink = 'cardLink',
 	avatarLink = 'avatarLink',
-	logInEmail = 'logInEmail',
-	logInPassword = 'logInPassword',
+	signInEmail = 'signInEmail',
+	signInPassword = 'signInPassword',
 	signUpEmail = 'signUpEmail',
 	signUpPassword = 'signUpPassword ',
 }

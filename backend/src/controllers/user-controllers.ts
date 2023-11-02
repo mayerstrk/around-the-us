@@ -93,8 +93,9 @@ const createUserControllerHelper: MutationControllerHelper<
 
 	response.cookie('token', token, {
 		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		sameSite: 'none',
+		secure: true,
+		domain: process.env.DOMAIN,
+		sameSite: 'strict',
 		signed: true,
 	});
 
@@ -107,13 +108,14 @@ const createUserController = controllerBuilder.mutation({
 
 // === Log in ===
 
-const logInControllerHelper: MutationControllerHelper<
-	AppMutationEndpointName.logIn
+const signInControllerHelper: MutationControllerHelper<
+	AppMutationEndpointName.signIn
 > = async (request, response) => {
 	const {
 		body: { email, password },
 	} = request;
 
+	console.log('in loginControllerHelper');
 	const user = await safe({
 		value: UserModel.findUserByCredentials(email, password),
 		async: true,
@@ -138,10 +140,13 @@ const logInControllerHelper: MutationControllerHelper<
 		errorName: ErrorName.internalServerError,
 	});
 
+	console.log(token);
+
 	response.cookie('token', token, {
 		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		sameSite: 'none',
+		secure: true,
+		sameSite: 'strict',
+		domain: process.env.DOMAIN,
 		signed: true,
 	});
 
@@ -154,8 +159,8 @@ const logInControllerHelper: MutationControllerHelper<
 	};
 };
 
-const logInController = controllerBuilder.mutation({
-	controllerHelper: logInControllerHelper,
+const signInController = controllerBuilder.mutation({
+	controllerHelper: signInControllerHelper,
 });
 
 // === Validate Token ===
@@ -163,8 +168,6 @@ const logInController = controllerBuilder.mutation({
 const validateTokenControllerHelper: QueryControllerHelper<
 	AppQueryEndpointName.validateToken
 > = async (request, response) => {
-	console.log('request.user._id: ' + request.user._id);
-
 	const user = await safe({
 		value: UserModel.findById(request.user._id),
 		async: true,
@@ -253,7 +256,7 @@ export {
 	getUsersController,
 	getUserController,
 	createUserController,
-	logInController,
+	signInController,
 	logOutController,
 	updateProfileInfoController,
 	updateAvatarController,

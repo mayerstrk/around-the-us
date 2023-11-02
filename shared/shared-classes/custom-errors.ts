@@ -94,6 +94,7 @@ class ForbiddenError extends CustomError {
 		);
 	}
 }
+
 class InternalServerError extends CustomError {
 	constructor(message: string, originalError?: Error) {
 		super(

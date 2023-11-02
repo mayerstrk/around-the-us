@@ -1,21 +1,20 @@
-import { useEffect } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-	toggledLogInErrorPopupVisibility,
-	toggledRegisterSuccessPopupVisibility,
+	toggledAuthErrorPopupVisibility,
+	toggledSignUpSuccessPopupVisibility,
 } from '../../features/popups/popups-visibility-slice';
 import { RoutesPaths } from '../../utils';
 import { InputName, useForm } from '../../hooks/hooks-form';
 import { useAppDispatch } from '../../hooks/hooks-redux';
 import AppForm, { type AppFormInputs } from '../AppForm/AppForm';
-import LogInErrorPopup from '../LogInErrorPopup/LogInErrorPopup';
-import RegisterSuccessPopup from '../RegisterSuccessPopup/RegisterSuccessPopup';
 import { useCreateUserMutation } from '../../features/app-data-api/app-data-api-slice';
-import ProcessLoadingBar from '../ProcessLoadingBar/ProcessLoadingBar';
+import ProcessLoadingBar from '../ProcessLoadingBar/process-loading-bar';
 
 const inputsArray: AppFormInputs = [
 	{
 		required: true,
+		autoComplete: 'off',
 		type: 'email',
 		id: 'input-sign-up-email',
 		name: InputName.signUpEmail,
@@ -24,13 +23,15 @@ const inputsArray: AppFormInputs = [
 	{
 		required: true,
 		type: 'password',
+		autoComplete: 'new-password',
 		id: 'input-sign-up-password',
 		name: InputName.signUpPassword,
 		placeholder: 'Password',
+		minLength: 8,
 	},
 ];
 
-function SignUp() {
+function SignUp({ children }: { children: ReactNode }) {
 	const [
 		createUser,
 		{
@@ -46,35 +47,35 @@ function SignUp() {
 
 	useEffect(() => {
 		if (isCreateUserSuccess) {
-			dispatch(toggledRegisterSuccessPopupVisibility());
+			dispatch(toggledSignUpSuccessPopupVisibility());
 			setTimeout(() => {
+				dispatch(toggledSignUpSuccessPopupVisibility());
 				navigate(RoutesPaths.home);
 			}, 2000);
-			dispatch(toggledRegisterSuccessPopupVisibility());
+			// Dispatch(toggledSignUpSuccessPopupVisibility());
 		}
 	}, [isCreateUserSuccess, dispatch, navigate]);
 
 	useEffect(() => {
 		if (isCreateUserError) {
-			dispatch(toggledLogInErrorPopupVisibility());
+			dispatch(toggledAuthErrorPopupVisibility());
 		}
 	}, [isCreateUserError, dispatch]);
 
 	return (
 		<>
 			{isCreateUserLoading && <ProcessLoadingBar />}
-			<RegisterSuccessPopup />
-			<LogInErrorPopup />
+			{children}
 			<AppForm
 				header="Sign up"
-				name="log-in"
+				name="sign-in"
 				formType="page"
 				inputsArray={inputsArray}
 				submitButtonText={
 					isCreateUserLoading ? 'Loading...' : submitButtonTextDefault
 				}
 				bottomLinkText="Already a member? Log in here!"
-				bottomLinkPath={RoutesPaths.logIn}
+				bottomLinkPath={RoutesPaths.signIn}
 				values={values}
 				onChange={handleChange}
 				onSubmit={async (event) => {

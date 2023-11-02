@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import {
 	createUserController as createUser,
-	logInController as logIn,
+	signInController as signIn,
 } from '../controllers/user-controllers';
 import { userCredentialsValidator } from '../validator-schemas/user-validator-schemas';
 
@@ -9,6 +9,6 @@ import { userCredentialsValidator } from '../validator-schemas/user-validator-sc
 const router = Router();
 
 router.post('/signup', userCredentialsValidator, createUser);
-router.post('/signin', userCredentialsValidator, logIn);
+router.post('/signin', userCredentialsValidator, signIn);
 
 export default router;

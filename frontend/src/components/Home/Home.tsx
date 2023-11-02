@@ -4,7 +4,7 @@ import AddCardPopup from '../AddCardPopup/AddCardPopup';
 import DeleteCardPopup from '../DeleteCardPopup/DeleteCardPopup';
 import EditAvatarPopup from '../EditAvatarPopup/EditAvatarPopup';
 import EditProfilePopup from '../EditProfilePopup/EditProfilePopup';
-import ProfileInfo from '../ProfileInfo/ProfiileInfo';
+import ProfileInfo from '../ProfileInfo/profile-info';
 
 function Home() {
 	return (

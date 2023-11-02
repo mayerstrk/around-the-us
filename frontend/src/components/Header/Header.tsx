@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import { RoutesPaths } from '../../utils';
 import { useAppSelector } from '../../hooks/hooks-redux';
 import { useLogOutMutation } from '../../features/app-data-api/app-data-api-slice';
-import ProcessLoadingBar from '../ProcessLoadingBar/ProcessLoadingBar';
+import ProcessLoadingBar from '../ProcessLoadingBar/process-loading-bar';
 import logo from './header-images/logo.svg'; // eslint-disable-line n/file-extension-in-import
 
 const enum AuthButtonText {
-	logIn = 'Log in',
+	signIn = 'Log in',
 	logOut = 'Log out',
 	signUp = 'Sign up',
 }
@@ -44,12 +44,12 @@ function AuthButton() {
 			switch (location.pathname) {
 				case RoutesPaths.signUp: {
 					return {
-						route: RoutesPaths.logIn,
-						text: AuthButtonText.logIn,
+						route: RoutesPaths.signIn,
+						text: AuthButtonText.signIn,
 					};
 				}
 
-				case RoutesPaths.logIn: {
+				case RoutesPaths.signIn: {
 					return {
 						route: RoutesPaths.signUp,
 						text: AuthButtonText.signUp,
@@ -78,7 +78,7 @@ function AuthButton() {
 					className="header__button_logout"
 					onClick={() => {
 						logOut();
-						navigate(RoutesPaths.logIn);
+						navigate(RoutesPaths.signIn);
 					}}
 				>
 					{AuthButtonText.logOut}

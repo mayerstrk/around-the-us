@@ -47,20 +47,20 @@ export const appDataApiSlice = createApi({
 				data: AppResponsePayloadDictionary[AppMutationEndpointName.createUser];
 			}) => response.data,
 		}),
-		logIn: builder.mutation<
-			AppResponsePayloadDictionary[AppMutationEndpointName.logIn],
+		signIn: builder.mutation<
+			AppResponsePayloadDictionary[AppMutationEndpointName.signIn],
 			UserCredentials
 		>({
 			query(credentials) {
 				return {
-					url: 'logIn',
+					url: 'signin',
 					method: 'POST',
 					body: credentials,
 					skipCache: true,
 				};
 			},
 			transformResponse: (response: {
-				data: AppResponsePayloadDictionary[AppMutationEndpointName.logIn];
+				data: AppResponsePayloadDictionary[AppMutationEndpointName.signIn];
 			}) => response.data,
 			invalidatesTags: ['Authorized'],
 		}),
@@ -253,7 +253,7 @@ export const appDataApiSlice = createApi({
 
 export const {
 	useCreateUserMutation,
-	useLogInMutation,
+	useSignInMutation,
 	useLogOutMutation,
 	useValidateTokenQuery,
 	useGetCardsQuery,

@@ -7,7 +7,7 @@ const enum PopupName {
 	image = 'image',
 	deleteCard = 'delete-card',
 	error = 'error',
-	logInError = 'log-in-error',
+	authError = 'auth-error',
 	signUpSuccess = 'signUp-success',
 }
 
@@ -19,14 +19,14 @@ interface PopupsVisibility {
 	deleteCardPopupIsVisible: boolean;
 	errorPopupIsVisible: boolean;
 	signUpSuccessPopupIsVisible: boolean;
-	logInErrorPopupIsVisible: boolean;
+	authErrorPopupIsVisible: boolean;
 }
 
-interface TimeOutClosePopupState {
+interface closeOnTimoutState {
 	wasClicked: boolean;
 }
 
-const initialState: PopupsVisibility & TimeOutClosePopupState = {
+const initialState: PopupsVisibility & closeOnTimoutState = {
 	editProfilePopupIsVisible: false,
 	editAvatarPopupIsVisible: false,
 	addCardPopupIsVisible: false,
@@ -34,7 +34,7 @@ const initialState: PopupsVisibility & TimeOutClosePopupState = {
 	deleteCardPopupIsVisible: false,
 	errorPopupIsVisible: false,
 	signUpSuccessPopupIsVisible: false,
-	logInErrorPopupIsVisible: false,
+	authErrorPopupIsVisible: true,
 	wasClicked: false,
 };
 
@@ -78,16 +78,16 @@ const popupsVisibilitySlice = createSlice({
 				errorPopupIsVisible: !state.errorPopupIsVisible,
 			};
 		},
-		toggledRegisterSuccessPopupVisibility(state) {
+		toggledSignUpSuccessPopupVisibility(state) {
 			return {
 				...initialState,
 				signUpSuccessPopupIsVisible: !state.signUpSuccessPopupIsVisible,
 			};
 		},
-		toggledLogInErrorPopupVisibility(state) {
+		toggledAuthErrorPopupVisibility(state) {
 			return {
 				...initialState,
-				logInErrorPopupIsVisible: !state.logInErrorPopupIsVisible,
+				authErrorPopupIsVisible: !state.authErrorPopupIsVisible,
 			};
 		},
 		wasClicked(state) {
@@ -103,8 +103,8 @@ export const {
 	toggledEditProfilePopupVisibility,
 	toggledImagePopupVisibility,
 	toggledDeleteCardPopupVisibility,
-	toggledLogInErrorPopupVisibility,
-	toggledRegisterSuccessPopupVisibility,
+	toggledAuthErrorPopupVisibility,
+	toggledSignUpSuccessPopupVisibility,
 	wasClicked,
 } = popupsVisibilitySlice.actions;
 

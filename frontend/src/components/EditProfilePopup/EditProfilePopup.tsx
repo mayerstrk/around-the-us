@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import PopupWithForm from '../PopupWithForm/PopupWithForm';
+import PopupWithForm from '../PopupWithForm/popup-with-form';
 import {
 	PopupName,
 	toggledEditProfilePopupVisibility,

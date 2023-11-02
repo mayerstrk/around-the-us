@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom';
 import { type ReactNode } from 'react';
 import { type RoutesPaths } from '../../utils';
 import { useValidateTokenQuery } from '../../features/app-data-api/app-data-api-slice';
-import ProcessLoadingBar from '../ProcessLoadingBar/ProcessLoadingBar';
+import ProcessLoadingBar from '../ProcessLoadingBar/process-loading-bar';
 
 interface ProtectedComponentProps {
 	children: ReactNode;

@@ -14,7 +14,7 @@ function ErrorPopup() {
 		(state) => state.popupsVisibility.errorPopupIsVisible,
 	);
 
-	const errorAction = useAppSelector((state) => state.errorAction);
+	const error = useAppSelector((state) => state.error);
 
 	const onSeeDetailsClick = () => {
 		setIsErrorMessageVisible(!isErrorMessageVisible);
@@ -38,7 +38,7 @@ function ErrorPopup() {
 							: 'error__message_hidden'
 					}
 				>
-					{errorAction.message && errorAction.message}
+					{error.globalErrorMessage && error.globalErrorMessage}
 				</span>
 			</p>
 			<button

@@ -50,7 +50,8 @@ const userSchema = new Schema<UserDocument, IUserModel>(
 			select: false,
 			validate: {
 				validator: (password: string) => validator.isStrongPassword(password),
-				message: 'Invalid password',
+				message:
+					'Password should be at least 10 characters long and contain uppercase, lowercase, numbers, and symbol characters.',
 			},
 		},
 	},

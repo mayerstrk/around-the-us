@@ -58,7 +58,7 @@ type AppExpressMutationDictionary = {
 		params: Record<string, never>;
 		body: UserCredentials;
 	};
-	[AppMutationEndpointName.logIn]: {
+	[AppMutationEndpointName.signIn]: {
 		params: Record<string, never>;
 		body: UserCredentials;
 	};

@@ -1,12 +1,12 @@
 import {
 	SkeletonRows,
 	SkeletonRowsGradual,
-} from '../../SkeletonRows/SkeletonRows';
+} from '../../SkeletonRows/skeleton-rows';
 
 export default function CardSkeleton() {
 	return (
 		<li className="card-skeleton">
-			<div className="card-skeleton__photo-container">
+			<div className="card-skeleton__image-container">
 				<SkeletonRows height={8} flexAlign="center" />
 			</div>
 			<div className="card-skeleton__bar">

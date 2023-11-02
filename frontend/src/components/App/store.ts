@@ -12,7 +12,7 @@ export const store = configureStore({
 		currentUser: currentUserReducer,
 		popupsVisibility: popupsVisibilityReducer,
 		selectedCard: selectedCardReducer,
-		errorAction: errorReducer,
+		error: errorReducer,
 		[appDataApiSlice.reducerPath]: appDataApiSlice.reducer,
 	},
 	middleware(getDefaultMiddleware) {

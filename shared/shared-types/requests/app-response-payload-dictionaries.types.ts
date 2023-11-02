@@ -16,7 +16,7 @@ type AppMutationResponsePayloadDictionary = {
 	[AppMutationEndpointName.createUser]: {
 		message: 'User created successfuly';
 	};
-	[AppMutationEndpointName.logIn]: {
+	[AppMutationEndpointName.signIn]: {
 		message: 'User logged in successfuly';
 	};
 	[AppMutationEndpointName.logOut]: { message: 'User logged out successfuly' };

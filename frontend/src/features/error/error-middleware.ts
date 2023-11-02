@@ -5,16 +5,20 @@ import {
 	isRejectedWithValue,
 } from '@reduxjs/toolkit';
 import { type UnknownAsyncThunkRejectedAction } from '@reduxjs/toolkit/dist/matchers';
+import * as yup from 'yup';
 import { type AppDispatch, type RootState } from '../../components/App/store';
 import { toggledErrorPopupVisibility } from '../popups/popups-visibility-slice';
 import { appDataApiSlice } from '../app-data-api/app-data-api-slice';
-import { setErrorMessageFromError } from './error-slice';
+import {
+	setErrorMessage,
+	setGlobalErrorPopupMessageFromError,
+} from './error-slice';
 
-interface ExpectedActionMetaArg {
+interface ExpectedRejectedActionMetaArg {
 	endpointName: string;
 }
 
-interface ExpectedActionPayload {
+interface ExpectedRejectedActionPayload {
 	status: string;
 	originalStatus: number;
 	data: {
@@ -25,35 +29,89 @@ interface ExpectedActionPayload {
 	error: string;
 }
 
-const ignoredEndpoints = new Set(['logIn', 'createUser', 'validateToken']);
+type ExpectedRejectedAction = UnknownAsyncThunkRejectedAction & {
+	payload: ExpectedRejectedActionPayload;
+	meta: { arg: ExpectedRejectedActionMetaArg };
+};
+
+const ExpectedRejectedActionSchema = yup.object().shape({
+	payload: yup
+		.object()
+		.shape({
+			data: yup
+				.object()
+				.shape({
+					message: yup.string().required(),
+					name: yup.string().required(),
+					cause: yup.mixed().notRequired(),
+				})
+				.required(),
+		})
+		.required(),
+	meta: yup
+		.object()
+		.shape({
+			arg: yup
+				.object()
+				.shape({
+					endpointName: yup.string().required(),
+				})
+				.required(),
+		})
+		.required(),
+});
+
+function validateRejectedAction(
+	action: unknown,
+): action is ExpectedRejectedAction {
+	try {
+		ExpectedRejectedActionSchema.validateSync(action);
+		return true;
+	} catch (error) {
+		if (error instanceof yup.ValidationError) {
+			console.error(
+				`Error action not of the expected shape (${
+					error.message
+				}): ${JSON.stringify(error, null, 2)}`,
+			);
+		} else {
+			console.error(
+				`Error action not of the expected shape: ${JSON.stringify(
+					error,
+					null,
+					2,
+				)}`,
+			);
+		}
+
+		return false;
+	}
+}
+
+const authEndpoints = new Set(['signIn', 'createUser', 'validateToken']);
 
 const errorHandler: Middleware =
 	(api: MiddlewareAPI<AppDispatch, RootState>) =>
 	(next: AppDispatch) =>
 	(action: AnyAction) => {
 		if (isRejectedWithValue(action)) {
-			appDataApiSlice.endpoints.validateToken.initiate();
-
-			if (
-				action.meta.arg &&
-				ignoredEndpoints.has(
-					(action.meta.arg as ExpectedActionMetaArg).endpointName,
-				)
-			) {
-				return next(action);
+			if (!validateRejectedAction(action)) {
+				throw new Error('Action does not match the expected shape');
 			}
 
-			api.dispatch(
-				setErrorMessageFromError(
-					action as UnknownAsyncThunkRejectedAction & {
-						payload: ExpectedActionPayload;
-					},
-				),
-			);
+			if (!authEndpoints.has(action.meta.arg.endpointName)) {
+				appDataApiSlice.endpoints.validateToken.initiate();
+			}
 
-			if (!api.getState().popupsVisibility.errorPopupIsVisible) {
+			api.dispatch(setErrorMessage(action.payload.data.message));
+			console.log(JSON.stringify(action, null, 2));
+			api.dispatch(setGlobalErrorPopupMessageFromError(action.payload));
+
+			if (
+				!api.getState().popupsVisibility.errorPopupIsVisible &&
+				!authEndpoints.has(action.meta.arg.endpointName)
+			) {
 				api.dispatch(toggledErrorPopupVisibility());
-
 				setTimeout(() => {
 					if (api.getState().popupsVisibility.wasClicked) {
 						return;
@@ -68,4 +126,8 @@ const errorHandler: Middleware =
 	};
 
 export default errorHandler;
-export type { ExpectedActionMetaArg, ExpectedActionPayload };
+export type {
+	ExpectedRejectedActionMetaArg,
+	ExpectedRejectedActionPayload,
+	ExpectedRejectedAction,
+};

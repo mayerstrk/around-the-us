@@ -6,7 +6,7 @@
 	box-sizing: border-box;
 }
 
-.card__photo-container {
+.card__image-container {
   box-sizing: border-box;
   display: block;
 	background-color: #302d28;
@@ -15,15 +15,14 @@
   position: relative;
 }
 
-.card__photo {
+.card__image {
   width: 100%;
   height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	object-fit: cover; /* Ensures the image covers its container without stretching */
+  object-position: center; /* Centers the image */
 }
 
-.card__photo:hover {
+.card__image:hover {
   cursor: pointer;
 }
 

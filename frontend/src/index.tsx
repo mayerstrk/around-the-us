@@ -5,10 +5,12 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { store } from './components/App/store';
 import App from './components/App/App';
 import './index.css'; // eslint-disable-line n/file-extension-in-import
-import LogIn from './components/LogIn/log-in';
+import SignIn from './components/SignIn/sign-in';
 import SignUp from './components/SignUp/sign-up';
 import { RoutesPaths } from './utils';
 import ProtectedHome from './components/ProtectedComponent/instances/ProtectedHome';
+import AuthErrorPopup from './components/PopupAuthError/auth-error-popup';
+import RegisterSuccessPopup from './components/RegisterSuccessPopup/RegisterSuccessPopup';
 
 const router = createBrowserRouter([
 	{
@@ -21,12 +23,21 @@ const router = createBrowserRouter([
 				element: <ProtectedHome />,
 			},
 			{
-				path: RoutesPaths.logIn,
-				element: <LogIn />,
+				path: RoutesPaths.signIn,
+				element: (
+					<SignIn>
+						<AuthErrorPopup />
+						<RegisterSuccessPopup />
+					</SignIn>
+				),
 			},
 			{
 				path: RoutesPaths.signUp,
-				element: <SignUp />,
+				element: (
+					<SignUp>
+						<AuthErrorPopup />
+					</SignUp>
+				),
 			},
 		],
 	},

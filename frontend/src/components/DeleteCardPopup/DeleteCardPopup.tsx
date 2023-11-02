@@ -5,7 +5,7 @@ import {
 	toggledDeleteCardPopupVisibility,
 } from '../../features/popups/popups-visibility-slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks-redux';
-import PopupWithForm from '../PopupWithForm/PopupWithForm';
+import PopupWithForm from '../PopupWithForm/popup-with-form';
 
 function DeleteCardPopup() {
 	const isOpen = useAppSelector(

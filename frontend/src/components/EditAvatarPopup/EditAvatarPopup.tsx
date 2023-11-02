@@ -5,7 +5,7 @@ import {
 	toggleEditAvatarPopupVisibility,
 } from '../../features/popups/popups-visibility-slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks-redux';
-import PopupWithForm from '../PopupWithForm/PopupWithForm';
+import PopupWithForm from '../PopupWithForm/popup-with-form';
 import { InputName, useForm } from '../../hooks/hooks-form';
 
 function EditAvatarPopup() {
@@ -46,6 +46,7 @@ function EditAvatarPopup() {
 		>
 			<div className="form__input-container">
 				<input
+					autoComplete="off"
 					required
 					type="url"
 					id="input-profileUrl"

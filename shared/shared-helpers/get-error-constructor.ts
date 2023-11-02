@@ -6,8 +6,11 @@ import {
 	DuplicateKeyError,
 	AuthenticationError,
 	AuthorizationError,
+	ForbiddenError,
+	InternalServerError,
 	type AppCustomErrorConstructor,
 } from '../shared-classes/custom-errors';
+import assertUnreachable from './assert-unreachable';
 
 function getErrorConstructor(errorName: ErrorName): AppCustomErrorConstructor {
 	switch (errorName) {
@@ -35,8 +38,16 @@ function getErrorConstructor(errorName: ErrorName): AppCustomErrorConstructor {
 			return AuthorizationError;
 		}
 
+		case ErrorName.forbidden: {
+			return ForbiddenError;
+		}
+
+		case ErrorName.internalServerError: {
+			return InternalServerError;
+		}
+
 		default: {
-			throw new Error('Unknown error name provided');
+			return assertUnreachable(errorName, `Unknown error name provided`);
 		}
 	}
 }

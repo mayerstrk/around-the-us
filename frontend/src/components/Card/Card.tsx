@@ -58,11 +58,11 @@ function Card({ cardData, currentUserId }: CardProps) {
 function CardImage({ cardData, isOwner }: CardImageProps) {
 	const dispatch = useAppDispatch();
 	return (
-		<div className="card__photo-container">
+		<div className="card__image-container">
 			<img
 				src={cardData.link}
 				alt="Place goes here"
-				className="card__photo"
+				className="card__image"
 				onClick={() => {
 					dispatch(toggledImagePopupVisibility());
 				}}

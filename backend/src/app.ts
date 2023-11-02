@@ -23,9 +23,11 @@ if (result.error) {
 	throw result.error;
 }
 
-console.log(process.env.NODE_ENV);
+console.log(`\n\u001B[36m current environment: ${process.env.NODE_ENV}`);
 
-const { PORT = 3001 } = process.env;
+// Configure express server and set up middleware
+
+const { PORT = 3001, HOST } = process.env;
 const app = express();
 
 app.use(
@@ -63,18 +65,25 @@ app.use('/', celebrateValidator());
 
 app.use('/', errorHandlerMiddleware);
 
-const certificate = readFileSync('./certs/cert.pem', 'utf8');
-const privateKey = readFileSync('./certs/privatekey.pem', 'utf8');
-const passphrase = process.env.PASSPHRASE;
-const credentials = { key: privateKey, cert: certificate, passphrase };
+// Pull certificates and create https server
+
+const certificate = readFileSync('./certs/localhost.pem', 'utf8');
+const privateKey = readFileSync('./certs/localhost-key.pem', 'utf8');
+const credentials = { key: privateKey, cert: certificate };
 const httpsServer = https.createServer(credentials, app);
+
+// Connect to MongoDB and start server
+
+const serverListeningMessage =
+	process.env.NODE_ENV === 'production'
+		? `https server running on internal port ${PORT} behind a reverse proxy. Public URL: https://${HOST}/`
+		: `https server running on port ${PORT}. URL: https://localhost:${PORT}`;
 
 connect('mongodb://127.0.0.1:27017/aroundb-test')
 	.then(() => {
 		httpsServer.listen(PORT, () => {
-			console.log(
-				`HTTPS Server running on port ${PORT}. URL: https://localhost:${PORT}`,
-			);
+			console.log(`\u001B[35m   ${serverListeningMessage}\u001B[0m
+`);
 		});
 	})
 	// eslint-disable-next-line unicorn/prefer-top-level-await
