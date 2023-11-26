@@ -16,8 +16,8 @@ import errorHandlerMiddleware from './middleware/error-handler-middleware';
 import { requestLogger, errorLogger } from './middleware/logger';
 
 // eslint-disable-next-line unicorn/prefer-module
-const envPath = path.resolve(__dirname, '../.env'); // Adjust the '../.env' part if your .env file is located elsewhere
-const result = dotenv.config({ path: envPath });
+const environmentPath = path.resolve(__dirname, '../.env'); // Adjust the '../.env' part if your .env file is located elsewhere
+const result = dotenv.config({ path: environmentPath });
 
 if (result.error) {
 	throw result.error;
@@ -26,13 +26,12 @@ if (result.error) {
 console.log(`\n\u001B[36m current environment: ${process.env.NODE_ENV}`);
 
 // Configure express server and set up middleware
-
-const { PORT = 3001, HOST } = process.env;
+const { PORT = 3001, HOST, NODE_ENV, COOKIE_PARSER_SECRET } = process.env;
 const app = express();
 
 app.use(
 	cors({
-		origin: ['https://localhost:5173', 'https://localhost:4173'],
+		origin: ['https://127.0.0.1:5173', 'https://127.0.0.1:4173'],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 		credentials: true,
 		optionsSuccessStatus: 204,
@@ -41,7 +40,7 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
+app.use(cookieParser(COOKIE_PARSER_SECRET));
 
 app.use(requestLogger);
 
@@ -66,18 +65,15 @@ app.use('/', celebrateValidator());
 app.use('/', errorHandlerMiddleware);
 
 // Pull certificates and create https server
-
-const certificate = readFileSync('./certs/localhost.pem', 'utf8');
-const privateKey = readFileSync('./certs/localhost-key.pem', 'utf8');
+const certificate = readFileSync('./certs/127.0.0.1.pem', 'utf8');
+const privateKey = readFileSync('./certs/127.0.0.1-key.pem', 'utf8');
 const credentials = { key: privateKey, cert: certificate };
 const httpsServer = https.createServer(credentials, app);
 
 // Connect to MongoDB and start server
-
-const serverListeningMessage =
-	process.env.NODE_ENV === 'production'
-		? `https server running on internal port ${PORT} behind a reverse proxy. Public URL: https://${HOST}/`
-		: `https server running on port ${PORT}. URL: https://localhost:${PORT}`;
+const serverListeningMessage = NODE_ENV === 'production'
+	? `https server running on internal port ${PORT} behind a reverse proxy. Public URL: https://${HOST}/`
+	: `https server running on port ${PORT}. URL: https://127.0.0.1:${PORT}`;
 
 connect('mongodb://127.0.0.1:27017/aroundb-test')
 	.then(() => {
@@ -86,7 +82,7 @@ connect('mongodb://127.0.0.1:27017/aroundb-test')
 `);
 		});
 	})
-	// eslint-disable-next-line unicorn/prefer-top-level-await
-	.catch((error) => {
+// eslint-disable-next-line unicorn/prefer-top-level-await
+	.catch(error => {
 		console.error('Error initializing server:', error);
 	});
