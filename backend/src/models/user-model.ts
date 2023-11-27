@@ -5,7 +5,7 @@ import { ErrorName } from '@shared/shared-enums/error-names';
 import { type UserDocument } from '@shared/shared-types/resources/user.types';
 
 interface IUserModel extends Model<UserDocument> {
-	findUserByCredentials(email: string, password: string): Promise<UserDocument>;
+	findUserByCredentials(emai: string, password: string): Promise<UserDocument>;
 	findUserEmailById(id: string): Promise<{ email: string }>;
 }
 

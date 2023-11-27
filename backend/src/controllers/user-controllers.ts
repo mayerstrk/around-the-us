@@ -80,6 +80,7 @@ const createUserControllerHelper: MutationControllerHelper<
 		async: true,
 		errorMessage: 'Error creating user',
 		errorName: ErrorName.internalServerError,
+		test(resolvedValue) {},
 	});
 
 	const token = await safe({
@@ -128,7 +129,7 @@ const signInControllerHelper: MutationControllerHelper<
 		async: true,
 		errorMessage: 'Invalid email or password',
 		errorName: ErrorName.authentication,
-		test: (isMatch) => isMatch,
+		test: isMatch => isMatch,
 	});
 
 	const token = await safe({

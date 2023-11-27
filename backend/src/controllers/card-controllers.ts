@@ -110,15 +110,16 @@ const deleteCardControllerHelper: MutationControllerHelper<
 > = async (request, response) => {
 	const {
 		params: { cardId },
+		user: { _id: userId },
 	} = request;
 
 	const card = await safe({
 		value: CardModel.findById(cardId),
 		async: true,
-		errorMessage: "Couldn't find card with specified id.",
+		errorMessage: 'Couldn\'t find card with specified id.',
 		errorName: ErrorName.notFound,
-		test: (card) => card.owner === request.user._id,
-		testErrorMessage: "Deletion of other user's posts is not allowed.",
+		test: card => card.owner === userId,
+		testErrorMessage: 'Deletion of other user\'s posts is not allowed.',
 		testErrorName: ErrorName.forbidden,
 	});
 

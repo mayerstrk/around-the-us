@@ -1,5 +1,5 @@
 extends:
-  - "eslint:recommended"
+  - "eslint/recommended"
   - "plugin:@typescript-eslint/recommended"
   - "plugin:unicorn/recommended"
   - "plugin:@typescript-eslint/stylistic"
@@ -21,3 +21,5 @@ rules:
   "@typescript-eslint/consistent-type-definitions":
     - "error"
     - "interface"
+  "no-unused-vars": "off"
+  "@typescript-eslint/no-unused-vars": "error"
