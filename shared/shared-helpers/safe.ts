@@ -19,7 +19,7 @@ type SafeConfig<V, R extends V = V> = {
 			errorName: ErrorName;
 		}
 	| {
-			errorHandler: (error: Error) => never;
+			errorHandler: (error: unknown) => never;
 			errorMessage?: never;
 			errorName?: never;
 		}
@@ -104,7 +104,7 @@ async function safe<V, R extends V>(configuration: SafeConfig<V, R>) {
 			resolvedValue = await value;
 		} catch (error) {
 			if (errorHandler) {
-				return errorHandler(error as Error);
+				return errorHandler(error);
 			}
 			const SelectedError = getErrorConstructor(errorName);
 			throw new SelectedError(errorMessage, error as Error);
