@@ -12,9 +12,18 @@ type NeitherOption = {
 type SafeConfig<V, R extends V = V> = {
 	value: V | Promise<V>;
 	async?: boolean;
-	errorMessage: string;
-	errorName: ErrorName;
 } & (
+	| {
+			errorHandler?: never;
+			errorMessage: string;
+			errorName: ErrorName;
+		}
+	| {
+			errorHandler: (error: Error) => never;
+			errorMessage?: never;
+			errorName?: never;
+		}
+) & (
 	| {
 			typeguard: (value: NonNullable<V>) => value is NonNullable<R>;
 			test?: never;
@@ -35,7 +44,7 @@ type SafeConfig<V, R extends V = V> = {
  * This function aids in validation, type checking, and error handling.
  *
  * @remarks
- * - The `test` and `typeguard` options are mutually exclusive. Only one of them should be provided at a time.
+ * - The errorHandler and [errorMessage, errorName] options are mutually exclusive, the same is true for the test` and `typeguard` options. Only one of them should be provided at a time.
  *   If both are provided, the behavior is undefined.
  *
  * @template V - The type of the value or promise.
@@ -82,6 +91,7 @@ async function safe<V, R extends V>(configuration: SafeConfig<V, R>) {
 		async = false,
 		errorMessage,
 		errorName,
+		errorHandler,
 		test,
 		testErrorMessage,
 		testErrorName,
@@ -93,6 +103,9 @@ async function safe<V, R extends V>(configuration: SafeConfig<V, R>) {
 		try {
 			resolvedValue = await value;
 		} catch (error) {
+			if (errorHandler) {
+				return errorHandler(error as Error);
+			}
 			const SelectedError = getErrorConstructor(errorName);
 			throw new SelectedError(errorMessage, error as Error);
 		}
