@@ -48,52 +48,5 @@
 		"typescript": "^5.0.2",
 		"vite": "^4.4.5",
 		"xo": "^0.56.0"
-	},
-	"prettier": {
-		"bracketSpacing": true
-	},
-	"xo": {
-		"prettier": true,
-		"envs": [
-			"browser"
-		],
-		"parser": "@typescript-eslint/parser",
-		"parserOptions": {
-			"project": "./tsconfig.json"
-		},
-		"plugins": [
-			"@typescript-eslint"
-		],
-		"extends": [
-			"plugin:@typescript-eslint/recommended"
-		],
-		"rules": {
-			"import/extensions": "off",
-			"n/file-extension-in-import": [
-				"error",
-				"never"
-			],
-			"unicorn/filename-case": "off",
-			"@typescript-eslint/consistent-type-definitions": [
-				"error",
-				"interface"
-			],
-			"import/no-named-as-default": "off",
-			"@typescript-eslint/consistent-type-assertions": "off",
-			"object-curly-spacing": "off",
-			"@typescript-eslint/object-curly-spacing": [
-				"error",
-				"always"
-			],
-			"@typescript-eslint/restrict-template-expressions": "off",
-			"@typescript-eslint/no-unused-vars": "error",
-			"@typescript-eslint/no-floating-promises": "off",
-			"react/react-in-jsx-scope": "off",
-			"react-hooks/exhaustive-deps": "off",
-			"@typescript-eslint/no-implicit-any-catch": "off",
-			"@typescript-eslint/no-throw-literal": "off",
-			"@typescript-eslint/naming-convention": "off",
-			"@typescript-eslint/no-unsafe-enum-comparison": "off"
-		}
 	}
 }

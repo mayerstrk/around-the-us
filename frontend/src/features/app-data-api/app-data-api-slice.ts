@@ -17,10 +17,10 @@ import {
 import { userFetched, userLoggedOut } from '../current-user/current-user-slice';
 import { setErrorMessage } from '../error/error-slice';
 
-const baseUrl =
-	process.env.NODE_ENV === 'production'
+const baseUrl
+	= process.env.NODE_ENV === 'production'
 		? 'https://34.165.7.244:3001'
-		: 'https://localhost:3001';
+		: 'https://127.0.0.1:3001';
 
 export const appDataApiSlice = createApi({
 	reducerPath: 'appDataApi',
@@ -29,7 +29,7 @@ export const appDataApiSlice = createApi({
 		credentials: 'include',
 	}),
 	tagTypes: ['User', 'Cards', 'Authorized'],
-	endpoints: (builder) => ({
+	endpoints: builder => ({
 		createUser: builder.mutation<
 			AppResponsePayloadDictionary[AppMutationEndpointName.createUser],
 			UserCredentials
@@ -233,8 +233,8 @@ export const appDataApiSlice = createApi({
 						appDataApiSlice.util.updateQueryData(
 							'getCards',
 							undefined,
-							(draft) => {
-								const card = draft.find((cardData) => cardData._id === cardId);
+							draft => {
+								const card = draft.find(cardData => cardData._id === cardId);
 								if (card) {
 									Object.assign(card, updatedCard);
 								}
