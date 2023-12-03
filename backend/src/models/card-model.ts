@@ -42,11 +42,11 @@ const cardSchema = new Schema<CardDocument>(
 );
 
 cardSchema.pre('find', function () {
-	void this.populate(cardPopulateOptions);
+	this.populate(cardPopulateOptions);
 });
 
 cardSchema.pre('findOne', function () {
-	void this.populate(cardPopulateOptions);
+	this.populate(cardPopulateOptions);
 });
 
 const CardModel = model<CardDocument>('Card', cardSchema);
