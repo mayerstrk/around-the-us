@@ -4,12 +4,9 @@ import ProtectedComponent from '../protected-component';
 
 function ProtectedHome() {
 	return (
-		console.log('ProtectedHome rendered'),
-		(
-			<ProtectedComponent fallback={RoutesPaths.signIn}>
-				<Home />
-			</ProtectedComponent>
-		)
+		<ProtectedComponent fallback={RoutesPaths.signIn}>
+			<Home />
+		</ProtectedComponent>
 	);
 }
 

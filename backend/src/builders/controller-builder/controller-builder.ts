@@ -64,12 +64,6 @@ const controllerBuilder = {
 					request as AppExpressRequest<N>,
 					response,
 				));
-				console.log('==================SENDING DATA====================');
-				console.log(request.path, '-', request.method);
-				console.log('');
-				console.log(JSON.stringify(data));
-				console.log('==================================================');
-				console.log('');
 				response.status(Status.ok).send({ data });
 			} catch (error) {
 				next(error);

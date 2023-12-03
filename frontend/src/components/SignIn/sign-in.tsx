@@ -1,11 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, ReactNode } from 'react';
 import { toggledAuthErrorPopupVisibility } from '../../features/popups/popups-visibility-slice';
 import { RoutesPaths } from '../../utils';
 import { InputName, useForm } from '../../hooks/hooks-form';
 import { useAppDispatch } from '../../hooks/hooks-redux';
 import AppForm, { type AppFormInputs } from '../AppForm/AppForm';
-import AuthErrorPopup from '../PopupAuthError/auth-error-popup';
 import { useSignInMutation } from '../../features/app-data-api/app-data-api-slice';
 import ProcessLoadingBar from '../ProcessLoadingBar/process-loading-bar';
 
@@ -32,7 +31,6 @@ const inputsArray: AppFormInputs = [
 ];
 
 function SignIn({ children }: { children: ReactNode }) {
-	console.log('SignIn rendered');
 	const [
 		signInMutation,
 		{
@@ -63,6 +61,7 @@ function SignIn({ children }: { children: ReactNode }) {
 
 	return (
 		<>
+			{children}
 			{isSignInLoading && <ProcessLoadingBar />}
 			<AppForm
 				header="Log in"

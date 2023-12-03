@@ -1,6 +1,6 @@
-import { CastError, ValidationError } from '../shared-classes/custom-errors';
-import { type ErrorName } from '../shared-enums/error-names';
-import getErrorConstructor from './get-error-constructor';
+import { CastError, ValidationError } from "../shared-classes/custom-errors";
+import { type ErrorName } from "../shared-enums/error-names";
+import getErrorConstructor from "./get-error-constructor";
 
 type NeitherOption = {
 	test?: never;
@@ -17,34 +17,38 @@ type SafeConfig<V, R extends V = V> = {
 			errorHandler?: never;
 			errorMessage: string;
 			errorName: ErrorName;
-		}
+	  }
 	| {
-			errorHandler: (error: unknown) => never;
+			errorHandler: (error: unknown) => {
+				errorName: ErrorName;
+				errorMessage: string;
+			};
 			errorMessage?: never;
 			errorName?: never;
-		}
-) & (
-	| {
-			typeguard: (value: NonNullable<V>) => value is NonNullable<R>;
-			test?: never;
-			testErrorMessage?: never;
-			testErrorName?: never;
 	  }
-	| {
-			test: (value: NonNullable<V>) => boolean;
-			testErrorMessage?: string | undefined;
-			testErrorName?: ErrorName | undefined;
-			typeguard?: never;
-	  }
-	| NeitherOption
-);
+) &
+	(
+		| {
+				typeguard: (value: NonNullable<V>) => value is NonNullable<R>;
+				test?: never;
+				testErrorMessage?: never;
+				testErrorName?: never;
+		  }
+		| {
+				test: (value: NonNullable<V>) => boolean;
+				testErrorMessage?: string | undefined;
+				testErrorName?: ErrorName | undefined;
+				typeguard?: never;
+		  }
+		| NeitherOption
+	);
 
 /**
  * Safely handles and resolves the provided value, which can be either a regular value or a promise.
  * This function aids in validation, type checking, and error handling.
  *
  * @remarks
- * - The errorHandler and [errorMessage, errorName] options are mutually exclusive, the same is true for the test` and `typeguard` options. Only one of them should be provided at a time.
+ * - The { errorHandler } and { errorMessage, errorName } options are mutually exclusive, the same is true for the { test }  and { typeguard } options. Only one of them should be provided at a time.
  *   If both are provided, the behavior is undefined.
  *
  * @template V - The type of the value or promise.
@@ -53,6 +57,7 @@ type SafeConfig<V, R extends V = V> = {
  * @param {SafeOptions<V, R>} options - Configuration object for the function.
  * @param {V | Promise<V>} options.value - The value or promise to be resolved and validated.
  * @param {boolean} [options.async=false] - Indicates whether the provided value is a promise that should be awaited.
+ * @param {(error: unknown) => { errorName: ErrorName, errorMessage: string}} [options.errorHandler] - An optional error handler function to be used when throwing an error.
  * @param {string} options.errorMessage - The custom error message to be used when throwing an error.
  * @param {ErrorName} options.errorName - The name of the error to be thrown.
  * @param {(value: V) => boolean} [options.test] - An optional test function to validate the value.
@@ -104,10 +109,13 @@ async function safe<V, R extends V>(configuration: SafeConfig<V, R>) {
 			resolvedValue = await value;
 		} catch (error) {
 			if (errorHandler) {
-				return errorHandler(error);
+				const { errorName, errorMessage } = errorHandler(error);
+				throw new (getErrorConstructor(errorName))(
+					errorMessage,
+					error as Error,
+				);
 			}
-			const SelectedError = getErrorConstructor(errorName);
-			throw new SelectedError(errorMessage, error as Error);
+			throw new (getErrorConstructor(errorName))(errorMessage, error as Error);
 		}
 	} else {
 		resolvedValue = value as NonNullable<V>;
@@ -123,7 +131,7 @@ async function safe<V, R extends V>(configuration: SafeConfig<V, R>) {
 		}
 
 		const _errorMessage = `Validation failed (${
-			testErrorMessage ?? 'reason unspecified'
+			testErrorMessage ?? "reason unspecified"
 		}) for value: ${JSON.stringify(resolvedValue)}`;
 
 		if (testErrorName) {

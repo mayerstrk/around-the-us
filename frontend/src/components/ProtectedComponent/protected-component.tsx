@@ -10,7 +10,6 @@ interface ProtectedComponentProps {
 }
 
 function ProtectedComponent({ children, fallback }: ProtectedComponentProps) {
-	console.log('protected component rendered');
 	const {
 		isLoading: isValidateTokenLoading,
 		isError: isValidateTokenError,

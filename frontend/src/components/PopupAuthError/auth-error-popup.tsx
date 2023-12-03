@@ -10,7 +10,6 @@ function AuthErrorPopup() {
 	const isOpen = useAppSelector(
 		(state) => state.popupsVisibility.authErrorPopupIsVisible,
 	);
-	console.log(isOpen);
 	const errorMessage = useAppSelector((state) => state.error.message);
 	const dispatch = useAppDispatch();
 	return (
