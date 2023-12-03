@@ -5,6 +5,9 @@ import { ErrorName } from '@shared/shared-enums/error-names';
 import safe from '@shared/shared-helpers/safe';
 import { isRequestUser } from '@shared/shared-helpers/is-request-user';
 
+const { JWT_SECRET = '8FFCrlKQcWnhOtmAy4CYADktxODhhe06oah/8B2pW+c=' } =
+	process.env;
+
 const validateTokenMiddleware: RequestHandler = async (
 	request,
 	_response,
@@ -18,7 +21,7 @@ const validateTokenMiddleware: RequestHandler = async (
 		});
 
 		const decoded = await safe({
-			value: jwt.verify(token, process.env.JWT_SECRET!),
+			value: jwt.verify(token, JWT_SECRET),
 			errorMessage: 'Invalid token format.',
 			errorName: ErrorName.authentication,
 			typeguard: isRequestUser,

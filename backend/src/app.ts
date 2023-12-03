@@ -16,14 +16,11 @@ import errorHandlerMiddleware from './middleware/error-handler-middleware';
 import { requestLogger, errorLogger } from './middleware/logger';
 
 // eslint-disable-next-line unicorn/prefer-module
-const environmentPath = path.resolve(__dirname, '../.env'); // Adjust the '../.env' part if your .env file is located elsewhere
+const environmentPath = path.resolve(__dirname, '../.env');
 const result = dotenv.config({ path: environmentPath });
-
 if (result.error) {
 	throw result.error;
 }
-
-console.log(`\n\u001B[36m current environment: ${process.env.NODE_ENV}`);
 
 // Configure express server and set up middleware
 const { PORT = 3001, HOST, NODE_ENV, COOKIE_PARSER_SECRET } = process.env;
@@ -50,14 +47,6 @@ app.use('/', validateTokenMiddleware);
 
 app.use('/', protectedRoutes);
 
-app.use((_request, response) => {
-	response.status(Status.notFound);
-});
-
-app.use((_request, response) => {
-	response.status(Status.notFound).send('Page Not Found');
-});
-
 app.use(errorLogger);
 
 app.use('/', celebrateValidator());
@@ -71,18 +60,21 @@ const credentials = { key: privateKey, cert: certificate };
 const httpsServer = https.createServer(credentials, app);
 
 // Connect to MongoDB and start server
-const serverListeningMessage = NODE_ENV === 'production'
-	? `https server running on internal port ${PORT} behind a reverse proxy. Public URL: https://${HOST}/`
-	: `https server running on port ${PORT}. URL: https://127.0.0.1:${PORT}`;
+const serverListeningMessage =
+	NODE_ENV === 'production'
+		? `https server running on internal port ${PORT} behind a reverse proxy.
+			Public URL: https://${HOST}/`
+		: `https server running on port ${PORT}. URL: https://127.0.0.1:${PORT}`;
 
-connect('mongodb://127.0.0.1:27017/aroundb-test')
+connect('mongodb://127.0.0.1:27017/aroundb')
 	.then(() => {
 		httpsServer.listen(PORT, () => {
+			console.log(`\n\u001B[36m current environment: ${NODE_ENV}`);
 			console.log(`\u001B[35m   ${serverListeningMessage}\u001B[0m
 `);
 		});
 	})
-// eslint-disable-next-line unicorn/prefer-top-level-await
-	.catch(error => {
+	// eslint-disable-next-line unicorn/prefer-top-level-await
+	.catch((error) => {
 		console.error('Error initializing server:', error);
 	});
