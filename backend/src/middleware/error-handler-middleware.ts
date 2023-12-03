@@ -1,18 +1,22 @@
 import process from 'node:process';
 import { type Request, type Response } from 'express';
 import {
+	BadRequestError,
 	CustomError,
 	InternalServerError,
-} from '@shared/shared-classes/custom-errors'; // Update the path accordingly
+} from '@shared/shared-classes/custom-errors';
 import { ErrorName } from '@shared/shared-enums/error-names';
 import { type NextFunction } from 'express-serve-static-core';
+
+const { NODE_ENV = 'development' } = process.env;
 
 const errorHandlerMiddleware = (
 	error: Error,
 	_request: Request,
 	response: Response,
-	// Thank you so much! I could not for the life of me understand why I was getting html as a response
-	_next: NextFunction, // eslint-disable-line @typescript-eslint/no-unused-vars
+	// Thank you so much! I could not for the life of me understand why
+	// I was getting html as a response
+	_next: NextFunction,
 ) => {
 	console.error(error.stack);
 	// Check if the error is an instance of CustomError
@@ -27,22 +31,39 @@ const errorHandlerMiddleware = (
 			});
 	}
 
-	// If it's not one of the known errors, it's an internal server error
-	// This should be caught by the safe funcion's getErrorConstructor helper
-	// but this is a fallback in case an error is thrown outside of the safe
-	// function(which shouldn't happen) or it doesn't catch it for some reason
+	// If it's not one of the known errors, it's either a bad request or an
+	// internal server error.
+	// An internal server error should be caught by the safe funcion's
+	// getErrorConstructor helper but this is a fallback in case an error is
+	// thrown outside of the safe function(which shouldn't happen) or it
+	// doesn't catch it for some reason.
 
-	const internalError = new InternalServerError(
-		error.message || 'Unexpected error',
-	);
+	const status = 'status' in error ? error.status : 500;
+	switch (status) {
+		case 400: {
+			const badRequestError = new BadRequestError(
+				error.message || 'Bad request',
+				error,
+			);
+			return response.status(badRequestError.status).send(badRequestError);
+		}
 
-	return response.status(internalError.status).send({
-		message:
-			process.env.NODE_ENV === 'development'
-				? 'unhandled error - ' + internalError.message
-				: internalError.message,
-		name: ErrorName.internalServerError,
-	});
+		default: {
+			const message = error.message || 'An unexpected server error occurred.';
+			const internalError = new InternalServerError(
+				NODE_ENV === 'development' ? 'unhandled error - ' + message : message,
+			);
+
+			return response.status(internalError.status).send({
+				message:
+					NODE_ENV === 'development'
+						? 'unhandled error - ' + internalError.message
+						: internalError.message,
+				name: ErrorName.internalServerError,
+				originalError: error,
+			});
+		}
+	}
 };
 
 export default errorHandlerMiddleware;
