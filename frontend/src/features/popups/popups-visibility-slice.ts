@@ -34,7 +34,7 @@ const initialState: PopupsVisibility & closeOnTimoutState = {
 	deleteCardPopupIsVisible: false,
 	errorPopupIsVisible: false,
 	signUpSuccessPopupIsVisible: false,
-	authErrorPopupIsVisible: true,
+	authErrorPopupIsVisible: false,
 	wasClicked: false,
 };
 

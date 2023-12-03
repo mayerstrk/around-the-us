@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PopupWithForm from '../PopupWithForm/popup-with-form';
 import { useAddCardMutation } from '../../features/app-data-api/app-data-api-slice';
 import {
@@ -17,7 +17,12 @@ function AddCardPopup() {
 	const dispatch = useAppDispatch();
 	const [
 		addCard,
-		{ isLoading: addCardIsLoading, isSuccess: addCardIsSuccess, reset },
+		{
+			isLoading: addCardIsLoading,
+			isSuccess: addCardIsSuccess,
+			isError: addCardIsError,
+			reset,
+		},
 	] = useAddCardMutation();
 
 	useEffect(() => {
@@ -36,7 +41,9 @@ function AddCardPopup() {
 			name={PopupName.addCard}
 			isOpen={isOpen}
 			title="New place"
-			buttonText={addCardIsLoading ? 'Saving...' : 'Create'}
+			buttonText={
+				addCardIsLoading ? 'Saving' : addCardIsError ? 'Try again' : 'Create'
+			}
 			onClose={() => dispatch(toggledAddCardPopupVisibility())}
 			onSubmit={(event) => {
 				event.preventDefault();

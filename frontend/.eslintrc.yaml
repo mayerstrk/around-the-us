@@ -2,47 +2,55 @@ root: true
 env:
   browser: true
   es2023: true
-parser: "@typescript-eslint/parser"
+parser: '@typescript-eslint/parser'
 parserOptions:
-  project: "./tsconfig.json"
+  project: './tsconfig.json'
   ecmaVerions: 2023
   ecmaFeatures:
     jsx: true
 extends:
-  - "eslint:recommended"
-  - "plugin:@typescript-eslint/recommended"
-  - "plugin:react-hooks/recommended"
-  - "plugin:unicorn/recommended"
-  - "plugin:@typescript-eslint/stylistic"
-  - "xo"
-  - "xo-react"
+  - 'eslint:recommended'
+  - 'plugin:@typescript-eslint/recommended'
+  - 'plugin:react-hooks/recommended'
+  - 'plugin:unicorn/recommended'
+  - 'plugin:@typescript-eslint/stylistic'
+  - 'xo'
+  - 'xo-react'
 plugins:
-  - "react"
-  - "react-hooks"
-  - "react-refresh"
-  - "@typescript-eslint"
-  - "unicorn"
+  - 'react'
+  - 'react-hooks'
+  - 'react-refresh'
+  - '@typescript-eslint'
+  - 'unicorn'
 rules:
   react-refresh/only-export-components:
-    - "warn"
+    - 'warn'
     - allowConstantExport: true
-  import/extensions: "off"
-  unicorn/filename-case: "off"
-  "@typescript-eslint/consistent-type-definitions":
-    - "error"
-    - "interface"
-  import/no-named-as-default: "off"
-  "@typescript-eslint/consistent-type-assertions": "off"
-  object-curly-spacing: "off"
-  "@typescript-eslint/object-curly-spacing":
-    - "error"
-    - "always"
-  "@typescript-eslint/restrict-template-expressions": "off"
-  "@typescript-eslint/no-unused-vars": "error"
-  "@typescript-eslint/no-floating-promises": "off"
-  react/react-in-jsx-scope: "off"
-  react-hooks/exhaustive-deps: "off"
-  "@typescript-eslint/no-implicit-any-catch": "off"
-  "@typescript-eslint/no-throw-literal": "off"
-  "@typescript-eslint/naming-convention": "off"
-  "@typescript-eslint/no-unsafe-enum-comparison": "off"
+  import/extensions: 'off'
+  unicorn/filename-case: 'off'
+  '@typescript-eslint/consistent-type-definitions':
+    - 'error'
+    - 'interface'
+  import/no-named-as-default: 'off'
+  '@typescript-eslint/consistent-type-assertions': 'off'
+  max-len:
+    - 'error'
+    - code: 80
+    - tabWidth: 2
+  object-curly-spacing:
+		-
+  no-unused-vars': 'off'
+  '@typescript-eslint/no-unused-vars':
+    - 'error'
+    - argsIgnorePattern: '_'
+  '@typescript-eslint/object-curly-spacing':
+    - 'error'
+    - 'always'
+  '@typescript-eslint/restrict-template-expressions': 'off'
+  '@typescript-eslint/no-floating-promises': 'off'
+  react/react-in-jsx-scope: 'off'
+  react-hooks/exhaustive-deps: 'off'
+  '@typescript-eslint/no-implicit-any-catch': 'off'
+  '@typescript-eslint/no-throw-literal': 'off'
+  '@typescript-eslint/naming-convention': 'off'
+  '@typescript-eslint/no-unsafe-enum-comparison': 'off'

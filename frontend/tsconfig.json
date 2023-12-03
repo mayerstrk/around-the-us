@@ -1,12 +1,12 @@
 {
+	"target": "ES2016",
+	"useDefineForClassFields": true,
+	"ts-node": {
+		"files": true
+	},
+	"files": ["../shared/shared-types/vite-environment.d.ts"],
 	"compilerOptions": {
-		"target": "ES2020",
-		"useDefineForClassFields": true,
-		"lib": [
-			"ES2020",
-			"DOM",
-			"DOM.Iterable"
-		],
+		"lib": ["ES2023", "DOM", "DOM.Iterable"],
 		"module": "ESNext",
 		"skipLibCheck": true,
 		/* Bundler mode */
@@ -18,9 +18,7 @@
 		"jsx": "react-jsx",
 		/* Paths */
 		"paths": {
-			"@shared/*": [
-				"../shared/*"
-			]
+			"@shared/*": ["../shared/*"]
 		},
 		/* Linting */
 		"strict": true,
@@ -28,9 +26,7 @@
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true
 	},
-	"include": [
-		"src"
-	],
+	"include": ["src"],
 	"references": [
 		{
 			"path": "./tsconfig.node.json"

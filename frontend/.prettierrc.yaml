@@ -1,0 +1,4 @@
+# .prettierrc.yml
+operatorPosition: 'beginning'
+bracketSpacing: true
+singleQuote: true

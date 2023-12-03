@@ -1,0 +1,25 @@
+extends:
+  - "eslint/recommended"
+  - "plugin:@typescript-eslint/recommended"
+  - "plugin:unicorn/recommended"
+  - "plugin:@typescript-eslint/stylistic"
+  - "xo"
+parser: "@typescript-eslint/parser"
+plugins:
+  - "@typescript-eslint"
+  - "unicorn"
+root: true
+rules:
+  import/extensions: "off"
+  object-curly-spacing:
+    - "error"
+    - "always"
+  "@typescript-eslint/naming-convention": "off"
+  "@typescript-eslint/object-curly-spacing":
+    - "error"
+    - "always"
+  "@typescript-eslint/consistent-type-definitions":
+    - "error"
+    - "interface"
+  "no-unused-vars": "off"
+  "@typescript-eslint/no-unused-vars": "error"

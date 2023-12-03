@@ -14,16 +14,22 @@ interface PopupProps {
 }
 
 function Popup({ children, name, isOpen, onClose, options }: PopupProps) {
+	const closeOnEsc = (event: KeyboardEvent) => {
+		if (event.key === 'Escape') {
+			onClose();
+		}
+	};
+
+	const handleOverlay = (event: MouseEvent<HTMLDivElement>) => {
+		if (event.target === event.currentTarget && isOpen) {
+			onClose();
+		}
+	};
+
 	useEffect(() => {
 		if (!isOpen) {
 			return;
 		}
-
-		const closeOnEsc = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') {
-				onClose();
-			}
-		};
 
 		document.addEventListener('keydown', closeOnEsc);
 
@@ -31,12 +37,6 @@ function Popup({ children, name, isOpen, onClose, options }: PopupProps) {
 			document.removeEventListener('keydown', closeOnEsc);
 		};
 	}, [isOpen, onClose]);
-
-	const handleOverlay = (event: MouseEvent<HTMLDivElement>) => {
-		if (event.target === event.currentTarget) {
-			onClose();
-		}
-	};
 
 	return (
 		<div
