@@ -13,9 +13,14 @@ import {
 	type MutationControllerHelper,
 	type QueryControllerHelper,
 } from '../types/controller-helper.types';
+import { MongoServerError } from 'mongodb';
+
+const {
+	JWT_SECRET = '8FFCrlKQcWnhOtmAy4CYADktxODhhe06oah/8B2pW+c=',
+	DOMAIN = '127.0.0.1',
+} = process.env;
 
 // === Get users ===
-
 const getUsersControllerHelper: QueryControllerHelper<
 	AppQueryEndpointName.getUsers
 > = async (request, response) => {
@@ -78,13 +83,23 @@ const createUserControllerHelper: MutationControllerHelper<
 			password: hashedPassword,
 		}),
 		async: true,
-		errorMessage: 'Error creating user',
-		errorName: ErrorName.internalServerError,
-		test(resolvedValue) {},
+		errorHandler(error) {
+			if ((error as MongoServerError).code === 11_000) {
+				return {
+					errorMessage: 'User with this email already exists',
+					errorName: ErrorName.conflict,
+				};
+			}
+
+			return {
+				errorMessage: 'Error creating user test',
+				errorName: ErrorName.internalServerError,
+			};
+		},
 	});
 
 	const token = await safe({
-		value: jwt.sign({ _id: user._id }, process.env.JWT_SECRET!, {
+		value: jwt.sign({ _id: user._id }, JWT_SECRET, {
 			expiresIn: '7d',
 		}),
 		async: true,
@@ -95,7 +110,7 @@ const createUserControllerHelper: MutationControllerHelper<
 	response.cookie('token', token, {
 		httpOnly: true,
 		secure: true,
-		domain: process.env.DOMAIN,
+		domain: DOMAIN,
 		sameSite: 'strict',
 		signed: true,
 	});
@@ -116,7 +131,6 @@ const signInControllerHelper: MutationControllerHelper<
 		body: { email, password },
 	} = request;
 
-	console.log('in loginControllerHelper');
 	const user = await safe({
 		value: UserModel.findUserByCredentials(email, password),
 		async: true,
@@ -129,11 +143,11 @@ const signInControllerHelper: MutationControllerHelper<
 		async: true,
 		errorMessage: 'Invalid email or password',
 		errorName: ErrorName.authentication,
-		test: isMatch => isMatch,
+		test: (isMatch) => isMatch,
 	});
 
 	const token = await safe({
-		value: jwt.sign({ _id: user._id }, process.env.JWT_SECRET!, {
+		value: jwt.sign({ _id: user._id }, JWT_SECRET, {
 			expiresIn: '7d',
 		}),
 		async: true,
@@ -141,13 +155,11 @@ const signInControllerHelper: MutationControllerHelper<
 		errorName: ErrorName.internalServerError,
 	});
 
-	console.log(token);
-
 	response.cookie('token', token, {
 		httpOnly: true,
 		secure: true,
 		sameSite: 'strict',
-		domain: process.env.DOMAIN,
+		domain: DOMAIN,
 		signed: true,
 	});
 
