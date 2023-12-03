@@ -29,10 +29,6 @@ interface CardLikesProps {
 function Card({ cardData, currentUserId }: CardProps) {
 	const dispatch = useAppDispatch();
 
-	useEffect(() => {
-		console.log(cardData);
-	}, [cardData]);
-	console.log(cardData);
 	return (
 		<li
 			className="card"
