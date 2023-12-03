@@ -18,11 +18,7 @@ const errorSlice = createSlice({
 			state,
 			action: PayloadAction<ExpectedRejectedActionPayload>,
 		) {
-			state.message = `Error ${action.payload.status} - (${
-				action.payload.data.message
-			}) ${action.payload.data.name} - ${
-				action.payload.data.message ?? action.payload.error
-			}`;
+			state.message = `Error ${action.payload.status} - (${action.payload.data.message}`;
 		},
 	},
 });

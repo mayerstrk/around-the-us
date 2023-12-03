@@ -95,6 +95,28 @@ class ForbiddenError extends CustomError {
 	}
 }
 
+class ConflictError extends CustomError {
+	constructor(message: string, originalError?: Error) {
+		super(
+			message || 'A conflict occurred.',
+			Status.conflict,
+			ErrorName.conflict,
+			originalError,
+		);
+	}
+}
+
+class BadRequestError extends CustomError {
+	constructor(message: string, originalError?: Error) {
+		super(
+			message || 'Bad request.',
+			Status.badRequest,
+			ErrorName.badRequest,
+			originalError,
+		);
+	}
+}
+
 class InternalServerError extends CustomError {
 	constructor(message: string, originalError?: Error) {
 		super(
@@ -113,12 +135,14 @@ type AppCustomErrorConstructor =
 	| typeof DuplicateKeyError
 	| typeof AuthenticationError
 	| typeof AuthorizationError
+	| typeof ForbiddenError
+	| typeof ConflictError
+	| typeof BadRequestError
 	| typeof InternalServerError;
 
 export type { AppCustomErrorConstructor };
 
 export {
-	ForbiddenError,
 	CustomError,
 	ValidationError,
 	NotFoundError,
@@ -126,5 +150,8 @@ export {
 	DuplicateKeyError,
 	AuthenticationError,
 	AuthorizationError,
+	ForbiddenError,
+	ConflictError,
+	BadRequestError,
 	InternalServerError,
 };

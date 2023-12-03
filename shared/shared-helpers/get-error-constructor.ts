@@ -8,6 +8,7 @@ import {
 	AuthorizationError,
 	ForbiddenError,
 	InternalServerError,
+	ConflictError,
 	type AppCustomErrorConstructor,
 } from '../shared-classes/custom-errors';
 import assertUnreachable from './assert-unreachable';
@@ -40,6 +41,14 @@ function getErrorConstructor(errorName: ErrorName): AppCustomErrorConstructor {
 
 		case ErrorName.forbidden: {
 			return ForbiddenError;
+		}
+
+		case ErrorName.conflict: {
+			return ConflictError;
+		}
+
+		case ErrorName.badRequest: {
+
 		}
 
 		case ErrorName.internalServerError: {

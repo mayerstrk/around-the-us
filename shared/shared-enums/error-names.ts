@@ -7,6 +7,8 @@ const enum ErrorName {
 	authorization = 'AuthorizationError',
 	internalServerError = 'InternalServerError',
 	forbidden = 'ForbiddenError',
+	conflict = 'ConflictError',
+	badRequest = "BadRequestError"
 }
 
 export { ErrorName };

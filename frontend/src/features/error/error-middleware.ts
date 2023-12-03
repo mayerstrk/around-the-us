@@ -14,7 +14,7 @@ import {
 	setGlobalErrorPopupMessageFromError,
 } from './error-slice';
 
-interface ExpectedRejectedActionMetaArg {
+interface ExpectedRejectedActionMetaArgument {
 	endpointName: string;
 }
 
@@ -31,7 +31,7 @@ interface ExpectedRejectedActionPayload {
 
 type ExpectedRejectedAction = UnknownAsyncThunkRejectedAction & {
 	payload: ExpectedRejectedActionPayload;
-	meta: { arg: ExpectedRejectedActionMetaArg };
+	meta: { arg: ExpectedRejectedActionMetaArgument };
 };
 
 const ExpectedRejectedActionSchema = yup.object().shape({
@@ -42,7 +42,7 @@ const ExpectedRejectedActionSchema = yup.object().shape({
 				.object()
 				.shape({
 					message: yup.string().required(),
-					name: yup.string().required(),
+					name: yup.string().notRequired(),
 					cause: yup.mixed().notRequired(),
 				})
 				.required(),
@@ -72,13 +72,13 @@ function validateRejectedAction(
 			console.error(
 				`Error action not of the expected shape (${
 					error.message
-				}): ${JSON.stringify(error, null, 2)}`,
+				}): ${JSON.stringify(error, undefined, 2)}`,
 			);
 		} else {
 			console.error(
 				`Error action not of the expected shape: ${JSON.stringify(
 					error,
-					null,
+					undefined,
 					2,
 				)}`,
 			);
@@ -88,7 +88,12 @@ function validateRejectedAction(
 	}
 }
 
-const authEndpoints = new Set(['signIn', 'createUser', 'validateToken']);
+const authEndpoints = new Set([
+	'signIn',
+	'createUser',
+	'validateToken',
+	'logOut',
+]);
 
 const errorHandler: Middleware =
 	(api: MiddlewareAPI<AppDispatch, RootState>) =>
@@ -104,7 +109,6 @@ const errorHandler: Middleware =
 			}
 
 			api.dispatch(setErrorMessage(action.payload.data.message));
-			console.log(JSON.stringify(action, null, 2));
 			api.dispatch(setGlobalErrorPopupMessageFromError(action.payload));
 
 			if (
@@ -127,7 +131,7 @@ const errorHandler: Middleware =
 
 export default errorHandler;
 export type {
-	ExpectedRejectedActionMetaArg,
+	ExpectedRejectedActionMetaArgument as ExpectedRejectedActionMetaArg,
 	ExpectedRejectedActionPayload,
 	ExpectedRejectedAction,
 };
