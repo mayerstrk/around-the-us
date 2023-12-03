@@ -1,4 +1,5 @@
 import { celebrate, Joi, Segments } from 'celebrate';
+import { joiIsValidUrl } from '../utils';
 
 const userCredentialsValidator = celebrate({
 	[Segments.BODY]: Joi.object().keys({
@@ -15,9 +16,13 @@ const userDetailsValidator = celebrate({
 });
 
 const userAvatarValidator = celebrate({
-	[Segments.BODY]: Joi.object().keys({
-		avatar: Joi.string().uri().required(),
-	}),
+	[Segments.BODY]: Joi.object()
+		.keys({
+			avatar: Joi.string().custom(joiIsValidUrl).required(),
+		})
+		.messages({
+			'string.https': '{{#abel}} must be a valid HTTPS ulr',
+		}),
 });
 
 export { userCredentialsValidator, userDetailsValidator, userAvatarValidator };
