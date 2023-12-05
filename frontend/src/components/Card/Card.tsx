@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { type CardData } from '@shared/shared-types/resources/card.types';
 import { useToggleLikeMutation } from '../../features/app-data-api/app-data-api-slice';
 import { useAppDispatch } from '../../hooks/hooks-redux';

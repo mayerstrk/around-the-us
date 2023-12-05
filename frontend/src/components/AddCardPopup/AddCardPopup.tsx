@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import PopupWithForm from '../PopupWithForm/popup-with-form';
 import { useAddCardMutation } from '../../features/app-data-api/app-data-api-slice';
 import {
