@@ -1,5 +1,5 @@
 /* React-specific entry point that automatically generates
-   hooks corresponding to the defined endpoints */
+	 hooks corresponding to the defined endpoints */
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
@@ -16,7 +16,7 @@ import {
 import { userFetched, userLoggedOut } from '../current-user/current-user-slice';
 import { setErrorMessage } from '../error/error-slice';
 
-const baseUrl = 'https://127.0.0.1:3001';
+const baseUrl = import.meta.env.VITE_API_BASE_URL ?? 'https://127.0.0.1:3001';
 
 export const appDataApiSlice = createApi({
 	reducerPath: 'appDataApi',
