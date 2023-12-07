@@ -1,26 +1,16 @@
 import process from 'node:process';
-import path from 'node:path';
 import { readFileSync } from 'node:fs';
 import https from 'node:https';
 import express from 'express';
 import { connect } from 'mongoose';
 import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import { errors as celebrateValidator } from 'celebrate';
-import { Status } from '../../shared/shared-enums/status';
 import protectedRoutes from './routes/protected-routes';
 import publicRoutes from './routes/public-routes';
 import validateTokenMiddleware from './middleware/validate-token-middleware';
 import errorHandlerMiddleware from './middleware/error-handler-middleware';
 import { requestLogger, errorLogger } from './middleware/logger';
-
-// eslint-disable-next-line unicorn/prefer-module
-const environmentPath = path.resolve(__dirname, '../.env');
-const result = dotenv.config({ path: environmentPath });
-if (result.error) {
-	throw result.error;
-}
 
 // Configure express server and set up middleware
 const { PORT = 3001, HOST, NODE_ENV, COOKIE_PARSER_SECRET } = process.env;
