@@ -13,12 +13,20 @@ import errorHandlerMiddleware from './middleware/error-handler-middleware';
 import { requestLogger, errorLogger } from './middleware/logger';
 
 // Configure express server and set up middleware
-const { PORT = 3001, HOST, NODE_ENV, COOKIE_PARSER_SECRET } = process.env;
+const {
+	PORT = 3001,
+	HOST = '127.0.0.1:3001',
+	NODE_ENV = 'development',
+	SSL_CERT_PATH = './certs/127.0.0.1.pem',
+	SSL_PRIVATE_KEY_PATH = './certs/127.0.0.1-key.pem',
+	COOKIE_PARSER_SECRET = 'f4be4a4d066622d6cab060bcee3adbfd',
+	HOST_URL = 'https://127.0.0.1:5173',
+} = process.env;
 const app = express();
 
 app.use(
 	cors({
-		origin: ['https://127.0.0.1:5173', 'https://127.0.0.1:4173'],
+		origin: [HOST_URL],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 		credentials: true,
 		optionsSuccessStatus: 204,
@@ -44,8 +52,8 @@ app.use('/', celebrateValidator());
 app.use('/', errorHandlerMiddleware);
 
 // Pull certificates and create https server
-const certificate = readFileSync('./certs/127.0.0.1.pem', 'utf8');
-const privateKey = readFileSync('./certs/127.0.0.1-key.pem', 'utf8');
+const certificate = readFileSync(SSL_CERT_PATH, 'utf8');
+const privateKey = readFileSync(SSL_PRIVATE_KEY_PATH, 'utf8');
 const credentials = { key: privateKey, cert: certificate };
 const httpsServer = https.createServer(credentials, app);
 
@@ -54,7 +62,7 @@ const serverListeningMessage =
 	NODE_ENV === 'production'
 		? `https server running on internal port ${PORT} behind a reverse proxy.
 			Public URL: https://${HOST}/`
-		: `https server running on port ${PORT}. URL: https://127.0.0.1:${PORT}`;
+		: `https server running on port ${PORT}. URL: ${HOST_URL}`;
 
 connect('mongodb://127.0.0.1:27017/aroundb')
 	.then(() => {
