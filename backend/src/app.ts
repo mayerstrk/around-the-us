@@ -54,9 +54,9 @@ const serverListeningMessage =
 	env.NODE_ENV === 'production'
 		? `https server running on internal port ${env.PORT} \
 behind a reverse proxy.
-			Public URL: https://${env.APP_URL}`
+			Public URL: https://${env.DB_URL}`
 		: `https server running on port ${env.PORT}. \
-URL: ${env.APP_URL}`;
+URL: ${env.DB_URL}`;
 
 connect('mongodb://127.0.0.1:27017/aroundb')
 	.then(() => {

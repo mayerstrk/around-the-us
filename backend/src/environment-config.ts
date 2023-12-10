@@ -13,6 +13,7 @@ const enum EnvironmentVariables {
 	JWT_SECRET = 'JWT_SECRET',
 	WEBSITE_URL = 'WEBSITE_URL',
 	APP_URL = 'APP_URL',
+	DB_URL = 'DB_URL',
 }
 
 const environmentVariables = {
@@ -31,7 +32,8 @@ const environmentVariables = {
 	[EnvironmentVariables.WEBSITE_URL]:
 		process.env.WEBSITE_URL || 'https://127.0.0.1:5173',
 	[EnvironmentVariables.APP_URL]:
-		process.env.APP_URL || 'https:/127.0.0.1:5173',
+		process.env.APP_URL || 'https:/127.0.0.1:5173/around',
+	[EnvironmentVariables.DB_URL]: process.env.DB_URL || 'https://127.0.0.1:3001',
 };
 
 export { EnvironmentVariables, environmentVariables as env };

@@ -16,7 +16,8 @@ import {
 import { userFetched, userLoggedOut } from '../current-user/current-user-slice';
 import { setErrorMessage } from '../error/error-slice';
 
-const baseUrl = import.meta.env.VITE_API_BASE_URL ?? 'https://127.0.0.1:3001';
+const baseUrl =
+	import.meta.env.VITE_API_BASE_URL ?? 'https://127.0.0.1:3001/around';
 
 export const appDataApiSlice = createApi({
 	reducerPath: 'appDataApi',

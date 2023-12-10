@@ -8,7 +8,7 @@ import { userCredentialsValidator } from '../validator-schemas/user-validator-sc
 // eslint-disable-next-line new-cap
 const router = Router();
 
-router.post('/signup', userCredentialsValidator, createUser);
-router.post('/signin', userCredentialsValidator, signIn);
+router.post('/around/signup', userCredentialsValidator, createUser);
+router.post('/around/signin', userCredentialsValidator, signIn);
 
 export default router;

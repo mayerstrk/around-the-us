@@ -25,19 +25,23 @@ import {
 
 // eslint-disable-next-line new-cap
 const router = Router();
-router.get('/auth', validateToken);
+router.get('/around/auth', validateToken);
 
-router.get('/users', getUsers);
-router.get('/users/me', getUser);
-router.patch('/users/me', userDetailsValidator, updateProfileInfo);
-router.patch('/users/me/avatar', userAvatarValidator, updateAvatar);
+router.get('/around/users', getUsers);
+router.get('/around/users/me', getUser);
+router.patch('/around/users/me', userDetailsValidator, updateProfileInfo);
+router.patch('/around/users/me/avatar', userAvatarValidator, updateAvatar);
 
-router.get('/cards', getCards);
-router.put('/cards/:cardId/likes', cardByIdValidator, likeCard);
-router.post('/cards', addCardValidator, addCard);
-router.delete('/cards/:cardId', cardByIdValidator, deleteCard);
-router.delete('/cards/:cardId/likes', cardByIdValidator, unlikeCardController);
+router.get('/around/cards', getCards);
+router.put('/around/cards/:cardId/likes', cardByIdValidator, likeCard);
+router.post('/around/cards', addCardValidator, addCard);
+router.delete('/around/cards/:cardId', cardByIdValidator, deleteCard);
+router.delete(
+	'/around/cards/:cardId/likes',
+	cardByIdValidator,
+	unlikeCardController,
+);
 
-router.post('/logout', logOut);
+router.post('/around/logout', logOut);
 
 export default router;
