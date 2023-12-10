@@ -12,6 +12,7 @@ const enum EnvironmentVariables {
 	COOKIE_PARSER_SECRET = 'COOKIE_PARSER_SECRET',
 	JWT_SECRET = 'JWT_SECRET',
 	WEBSITE_URL = 'WEBSITE_URL',
+	APP_URL = 'APP_URL',
 }
 
 const environmentVariables = {
@@ -29,6 +30,8 @@ const environmentVariables = {
 		process.env.JWT_SECRET || '7Sm7R8ynydCY1+2djGSDK3NKrWJ8jJyPba/YwBipr9c=',
 	[EnvironmentVariables.WEBSITE_URL]:
 		process.env.WEBSITE_URL || 'https://127.0.0.1:5173',
+	[EnvironmentVariables.APP_URL]:
+		process.env.APP_URL || 'https:/127.0.0.1:5173',
 };
 
 export { EnvironmentVariables, environmentVariables as env };
