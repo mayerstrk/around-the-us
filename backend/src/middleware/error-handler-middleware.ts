@@ -1,4 +1,3 @@
-import process from 'node:process';
 import { type Request, type Response } from 'express';
 import {
 	BadRequestError,
@@ -7,8 +6,8 @@ import {
 } from '@shared/shared-classes/custom-errors';
 import { ErrorName } from '@shared/shared-enums/error-names';
 import { type NextFunction } from 'express-serve-static-core';
-
-const { NODE_ENV = 'development' } = process.env;
+// eslint-disable-next-line unicorn/prevent-abbreviations
+import { env } from '../environment-config';
 
 const errorHandlerMiddleware = (
 	error: Error,
@@ -50,15 +49,17 @@ const errorHandlerMiddleware = (
 
 		default: {
 			const message = error.message || 'An unexpected server error occurred.';
-			const internalError = new InternalServerError(
-				NODE_ENV === 'development' ? 'unhandled error - ' + message : message,
+			const internalServerError = new InternalServerError(
+				env.NODE_ENV === 'development'
+					? 'unhandled error - ' + message
+					: message,
 			);
 
-			return response.status(internalError.status).send({
+			return response.status(internalServerError.status).send({
 				message:
-					NODE_ENV === 'development'
-						? 'unhandled error - ' + internalError.message
-						: internalError.message,
+					env.NODE_ENV === 'development'
+						? 'unhandled error - ' + internalServerError.message
+						: internalServerError.message,
 				name: ErrorName.internalServerError,
 				originalError: error,
 			});

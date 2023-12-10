@@ -10,6 +10,7 @@ import {
 	type MutationControllerHelper,
 	type QueryControllerHelper,
 } from '../types/controller-helper.types';
+import { CardData } from '@shared/shared-types/resources/card.types';
 
 // === Get cards ===
 
@@ -132,7 +133,7 @@ const deleteCardControllerHelper: MutationControllerHelper<
 		errorName: ErrorName.internalServerError,
 	});
 
-	return { request, response, data: deletedCard };
+	return { request, response, data: deletedCard as unknown as CardData };
 };
 
 const deleteCardController = controllerBuilder.mutation({

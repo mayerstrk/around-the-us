@@ -1,12 +1,10 @@
-import process from 'node:process';
 import { type Request, type RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 import { ErrorName } from '@shared/shared-enums/error-names';
 import safe from '@shared/shared-helpers/safe';
 import { isRequestUser } from '@shared/shared-helpers/is-request-user';
-
-const { JWT_SECRET = '8FFCrlKQcWnhOtmAy4CYADktxODhhe06oah/8B2pW+c=' } =
-	process.env;
+// eslint-disable-next-line unicorn/prevent-abbreviations
+import { env } from '../environment-config';
 
 const validateTokenMiddleware: RequestHandler = async (
 	request,
@@ -21,7 +19,7 @@ const validateTokenMiddleware: RequestHandler = async (
 		});
 
 		const decoded = await safe({
-			value: jwt.verify(token, JWT_SECRET),
+			value: jwt.verify(token, env.JWT_SECRET),
 			errorMessage: 'Invalid token format.',
 			errorName: ErrorName.authentication,
 			typeguard: isRequestUser,

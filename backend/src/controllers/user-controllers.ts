@@ -1,4 +1,3 @@
-import process from 'node:process';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import safe from '@shared/shared-helpers/safe';
@@ -14,11 +13,8 @@ import {
 	type QueryControllerHelper,
 } from '../types/controller-helper.types';
 import { MongoServerError } from 'mongodb';
-
-const {
-	JWT_SECRET = '8FFCrlKQcWnhOtmAy4CYADktxODhhe06oah/8B2pW+c=',
-	DOMAIN = '127.0.0.1',
-} = process.env;
+// eslint-disable-next-line unicorn/prevent-abbreviations
+import { env } from '../environment-config';
 
 // === Get users ===
 const getUsersControllerHelper: QueryControllerHelper<
@@ -99,7 +95,7 @@ const createUserControllerHelper: MutationControllerHelper<
 	});
 
 	const token = await safe({
-		value: jwt.sign({ _id: user._id }, JWT_SECRET, {
+		value: jwt.sign({ _id: user._id }, env.JWT_SECRET, {
 			expiresIn: '7d',
 		}),
 		async: true,
@@ -110,7 +106,7 @@ const createUserControllerHelper: MutationControllerHelper<
 	response.cookie('token', token, {
 		httpOnly: true,
 		secure: true,
-		domain: DOMAIN,
+		domain: env.DOMAIN_NAME,
 		sameSite: 'strict',
 		signed: true,
 	});
@@ -147,7 +143,7 @@ const signInControllerHelper: MutationControllerHelper<
 	});
 
 	const token = await safe({
-		value: jwt.sign({ _id: user._id }, JWT_SECRET, {
+		value: jwt.sign({ _id: user._id }, env.JWT_SECRET, {
 			expiresIn: '7d',
 		}),
 		async: true,
@@ -159,7 +155,7 @@ const signInControllerHelper: MutationControllerHelper<
 		httpOnly: true,
 		secure: true,
 		sameSite: 'strict',
-		domain: DOMAIN,
+		domain: env.DOMAIN_NAME,
 		signed: true,
 	});
 

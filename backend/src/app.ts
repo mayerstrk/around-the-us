@@ -1,4 +1,3 @@
-import process from 'node:process';
 import { readFileSync } from 'node:fs';
 import https from 'node:https';
 import express from 'express';
@@ -11,22 +10,15 @@ import publicRoutes from './routes/public-routes';
 import validateTokenMiddleware from './middleware/validate-token-middleware';
 import errorHandlerMiddleware from './middleware/error-handler-middleware';
 import { requestLogger, errorLogger } from './middleware/logger';
+// eslint-disable-next-line unicorn/prevent-abbreviations
+import { env } from './environment-config';
 
-// Configure express server and set up middleware
-const {
-	PORT = 3001,
-	HOST = '127.0.0.1:3001',
-	NODE_ENV = 'development',
-	SSL_CERT_PATH = './certs/127.0.0.1.pem',
-	SSL_PRIVATE_KEY_PATH = './certs/127.0.0.1-key.pem',
-	COOKIE_PARSER_SECRET = 'f4be4a4d066622d6cab060bcee3adbfd',
-	HOST_URL = 'https://127.0.0.1:5173',
-} = process.env;
+// Configure express server and set up middlewar
 const app = express();
 
 app.use(
 	cors({
-		origin: [HOST_URL],
+		origin: [env.WEBSITE_URL],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 		credentials: true,
 		optionsSuccessStatus: 204,
@@ -35,7 +27,7 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser(COOKIE_PARSER_SECRET));
+app.use(cookieParser(env.COOKIE_PARSER_SECRET));
 
 app.use(requestLogger);
 
@@ -52,22 +44,24 @@ app.use('/', celebrateValidator());
 app.use('/', errorHandlerMiddleware);
 
 // Pull certificates and create https server
-const certificate = readFileSync(SSL_CERT_PATH, 'utf8');
-const privateKey = readFileSync(SSL_PRIVATE_KEY_PATH, 'utf8');
+const certificate = readFileSync(env.SSL_CERT_PATH, 'utf8');
+const privateKey = readFileSync(env.SSL_PRIVATE_KEY_PATH, 'utf8');
 const credentials = { key: privateKey, cert: certificate };
 const httpsServer = https.createServer(credentials, app);
 
 // Connect to MongoDB and start server
 const serverListeningMessage =
-	NODE_ENV === 'production'
-		? `https server running on internal port ${PORT} behind a reverse proxy.
-			Public URL: https://${HOST}/`
-		: `https server running on port ${PORT}. URL: ${HOST_URL}`;
+	env.NODE_ENV === 'production'
+		? `https server running on internal port ${env.PORT} \
+behind a reverse proxy.
+			Public URL: https://${env.DOMAIN_NAME}/`
+		: `https server running on port ${env.PORT}. \
+URL: ${env.WEBSITE_URL}`;
 
 connect('mongodb://127.0.0.1:27017/aroundb')
 	.then(() => {
-		httpsServer.listen(PORT, () => {
-			console.log(`\n\u001B[36m current environment: ${NODE_ENV}`);
+		httpsServer.listen(env.PORT, () => {
+			console.log(`\n\u001B[36m current env: ${env.NODE_ENV}`);
 			console.log(`\u001B[35m   ${serverListeningMessage}\u001B[0m
 `);
 		});
