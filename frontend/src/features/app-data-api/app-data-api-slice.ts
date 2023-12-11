@@ -83,7 +83,7 @@ export const appDataApiSlice = createApi({
 					dispatch(setErrorMessage('Failed to log out'));
 				}
 			},
-			invalidatesTags: ['Authorized'],
+			invalidatesTags: ['Authorized', 'Cards', 'User'],
 		}),
 		validateToken: builder.query<
 			AppResponsePayloadDictionary[AppQueryEndpointName.validateToken],
