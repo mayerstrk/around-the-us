@@ -1,24 +1,23 @@
 .page {
-  max-width: 880px;
-  min-width: 320px;
-  margin: 0 auto;
-  padding: 45px 19px 60px;
-  background:  #191919;
-  font-family: 'Inter', arial, sans-serif;
-  font-style: normal;
-  font-size: 18px;
-  line-height: 1.22;
-  font-weight: 400;
-  color: #F3F3F3;
+	max-width: 880px;
+	min-width: 320px;
+	margin: 0 auto;
+	padding: 19px 60px;
+	background: #191919;
+	font-family: 'Inter', arial, sans-serif;
+	font-style: normal;
+	font-size: 18px;
+	line-height: 1.22;
+	font-weight: 400;
+	color: #f3f3f3;
 	display: flex;
 	flex: 1;
 	align-items: space-between;
 	flex-direction: column;
 }
 
-
 @media screen and (max-width: 768px) {
-  .page {
-    padding: 28px 0 60px;
-  }
+	.page {
+		padding: 0 0 60px;
+	}
 }

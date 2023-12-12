@@ -1,6 +1,7 @@
 .header {
 	margin: 0;
 	border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+	padding: 45px 0 28px;
 	display: flex;
 	justify-content: space-between;
 }
@@ -16,7 +17,7 @@
 	border: none;
 	color: #a9a9a9;
 	height: 22px;
-	width: 65px;
+	width: 90px;
 	padding: 0;
 	line-height: 22px;
 	font-size: 18px;
@@ -31,9 +32,11 @@
 	height: 22px;
 	width: 65px;
 	padding: 0;
+	text-wrap: nowrap;
 	line-height: 22px;
 	font-size: 18px;
 	text-decoration: none;
+	order: 2;
 }
 
 .header__user-email {
@@ -49,15 +52,60 @@
 	line-height: 22px;
 }
 
+.header__burger-menu {
+	display: none;
+	min-height: 24px;
+	min-width: 24px;
+	transition: all 0.2s ease-in-out;
+	background: url('../components/Header/header-images/burger-menu.svg');
+	border: none;
+	background-size: contain;
+	background-color: transparent;
+	background-position: center;
+	background-repeat: no-repeat;
+	box-sizing: border-box;
+}
+
+.header__burger-menu:hover {
+	cursor: pointer;
+}
+
 @media screen and (max-width: 768px) {
 	.header {
-		padding: 0 27px 27px 27px;
+		padding: 45px 27px 27px;
 	}
 }
 
 @media screen and (max-width: 650px) {
+	.header {
+		padding-top: 28px;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: auto auto;
+		grid-template-areas:
+			'toolbar toolbar'
+			'logo menu';
+	}
+
 	.header__logo {
 		width: 126px;
 		height: 24px;
+		grid-area: logo;
+	}
+
+	.header__burger-menu {
+		display: block;
+		grid-row: 2;
+		grid-area: menu;
+		justify-self: end;
+	}
+
+	.header__session-toolbar {
+		display: none;
+		padding: 12px 0 40px;
+		grid-row: 1;
+		grid-area: toolbar;
+		flex-direction: column;
+		align-items: center;
 	}
 }

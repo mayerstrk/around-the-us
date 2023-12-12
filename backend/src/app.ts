@@ -15,7 +15,7 @@ import { env } from './environment-config';
 
 // Configure express server and set up middlewar
 const app = express();
-
+console.log(env.WEBSITE_URL);
 app.use(
 	cors({
 		origin: [env.WEBSITE_URL],

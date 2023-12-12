@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { RoutesPaths } from '../../utils';
 import { useAppSelector } from '../../hooks/hooks-redux';
 import { useLogOutMutation } from '../../features/app-data-api/app-data-api-slice';
@@ -18,16 +18,55 @@ interface AuthButtonOptions {
 }
 
 export default function Header() {
-	const currentUserEmail = useAppSelector((state) => state.currentUser.email);
-
 	return (
 		<header className="header">
 			<img src={logo} alt="Around the U.S. logo" className="header__logo" />
-			<div className="header__session-toolbar">
+			<SessionMenu />
+		</header>
+	);
+}
+
+function SessionMenu() {
+	const [isSessionToolbarVisible, setIsSessionToolbarVisible] = useState(false);
+	const currentUserEmail = useAppSelector((state) => state.currentUser.email);
+	const toggleAuthToolbarVisibility = () => {
+		setIsSessionToolbarVisible(!isSessionToolbarVisible);
+	};
+
+	// Media query breakpoint (e.g., 650px)
+	const breakpoint = 650;
+
+	const handleResize = useCallback(() => {
+		if (window.innerWidth > breakpoint) {
+			setIsSessionToolbarVisible(true);
+		} else {
+			setIsSessionToolbarVisible(false);
+		}
+	}, []);
+
+	useEffect(() => {
+		handleResize();
+
+		window.addEventListener('resize', handleResize);
+
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
+
+	return (
+		<>
+			<div
+				className="header__session-toolbar"
+				style={{ display: isSessionToolbarVisible ? 'flex' : 'none' }}
+			>
 				<p className="header__user-email">{currentUserEmail}</p>
 				<AuthButton />
 			</div>
-		</header>
+			<button
+				type="button"
+				className="header__burger-menu"
+				onClick={toggleAuthToolbarVisibility}
+			/>
+		</>
 	);
 }
 

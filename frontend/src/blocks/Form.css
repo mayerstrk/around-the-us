@@ -158,4 +158,18 @@
 		margin-top: 16px;
 		padding: 12px;
 	}
+
+	.form__wrapper {
+		height: 100%;
+	}
+
+	.form_type_page {
+		flex-grow: 0.7;
+		gap: 0;
+		justify-content: space-between;
+	}
+
+	.form__fieldset {
+		margin-bottom: 30px;
+	}
 }
