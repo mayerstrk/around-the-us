@@ -88,6 +88,7 @@
 	background-repeat: no-repeat;
 	transition: all 0.2s ease-out;
 	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .card__like-button:hover {
