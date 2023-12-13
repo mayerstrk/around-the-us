@@ -17,9 +17,23 @@ interface AuthButtonOptions {
 	text: AuthButtonText;
 }
 
+const breakpoint = 650;
+
+const enum PageState {
+	largeScreen = 1,
+	smallScreenAndAtHome,
+	smallScreenAndAtAuthPage,
+}
+
 export default function Header() {
+	const location = useLocation();
+
 	return (
-		<header className="header">
+		<header
+			className={`header ${
+				location.pathname === RoutesPaths.home ? 'header_small-screen_home' : ''
+			}`}
+		>
 			<img src={logo} alt="Around the U.S. logo" className="header__logo" />
 			<SessionMenu />
 		</header>
@@ -27,45 +41,64 @@ export default function Header() {
 }
 
 function SessionMenu() {
-	const [isSessionToolbarVisible, setIsSessionToolbarVisible] = useState(false);
+	const [pageState, setPageState] = useState<PageState>();
+	const [isBurgerMenuActive, setIsBurgerMenuActive] = useState(false);
+
 	const currentUserEmail = useAppSelector((state) => state.currentUser.email);
-	const toggleAuthToolbarVisibility = () => {
-		setIsSessionToolbarVisible(!isSessionToolbarVisible);
-	};
+	const location = useLocation();
 
-	// Media query breakpoint (e.g., 650px)
-	const breakpoint = 650;
-
-	const handleResize = useCallback(() => {
-		if (window.innerWidth > breakpoint) {
-			setIsSessionToolbarVisible(true);
-		} else {
-			setIsSessionToolbarVisible(false);
-		}
+	const toggleBurgerMenuState = useCallback(() => {
+		setIsBurgerMenuActive((prevState) => !prevState);
 	}, []);
+
+	const checkPageState = useCallback(() => {
+		const isLargeScreen = window.innerWidth > breakpoint;
+		const isAtHome = location.pathname === RoutesPaths.home;
+
+		if (isLargeScreen) {
+			setPageState(PageState.largeScreen);
+		} else if (isAtHome) {
+			setPageState(PageState.smallScreenAndAtHome);
+		} else {
+			setPageState(PageState.smallScreenAndAtAuthPage);
+		}
+	}, [location.pathname]);
 
 	useEffect(() => {
-		handleResize();
-
-		window.addEventListener('resize', handleResize);
-
-		return () => window.removeEventListener('resize', handleResize);
-	}, []);
+		checkPageState();
+		window.addEventListener('resize', checkPageState);
+		return () => window.removeEventListener('resize', checkPageState);
+	}, [checkPageState]);
 
 	return (
 		<>
 			<div
-				className="header__session-toolbar"
-				style={{ display: isSessionToolbarVisible ? 'flex' : 'none' }}
+				className={`header__session-toolbar ${
+					pageState === PageState.smallScreenAndAtHome
+						? 'header__session-toolbar_burger-menu'
+						: ''
+				} ${
+					isBurgerMenuActive && pageState === PageState.smallScreenAndAtHome
+						? 'header__session-toolbar_burger-menu_visible'
+						: ''
+				}`}
 			>
 				<p className="header__user-email">{currentUserEmail}</p>
 				<AuthButton />
 			</div>
-			<button
-				type="button"
-				className="header__burger-menu"
-				onClick={toggleAuthToolbarVisibility}
-			/>
+			{pageState !== PageState.largeScreen && (
+				<button
+					type="button"
+					className={`header__burger-menu
+                        ${
+													pageState === PageState.smallScreenAndAtHome
+														? 'header__burger-menu_visible'
+														: ''
+												}
+                    `}
+					onClick={toggleBurgerMenuState}
+				/>
+			)}
 		</>
 	);
 }

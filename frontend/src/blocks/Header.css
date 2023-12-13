@@ -77,7 +77,7 @@
 }
 
 @media screen and (max-width: 650px) {
-	.header {
+	.header_small-screen_home {
 		padding-top: 28px;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -94,18 +94,26 @@
 	}
 
 	.header__burger-menu {
-		display: block;
+		display: none;
 		grid-row: 2;
 		grid-area: menu;
 		justify-self: end;
 	}
 
-	.header__session-toolbar {
+	.header__burger-menu_visible {
+		display: block;
+	}
+
+	.header__session-toolbar_burger-menu {
 		display: none;
 		padding: 12px 0 40px;
 		grid-row: 1;
 		grid-area: toolbar;
 		flex-direction: column;
 		align-items: center;
+	}
+
+	.header__session-toolbar_burger-menu_visible {
+		display: flex;
 	}
 }
