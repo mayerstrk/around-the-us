@@ -1,118 +1,118 @@
 .card {
-  width: 100%;
-  display: block;
-  overflow: hidden;
-  border-radius: 10px;
+	width: 100%;
+	display: block;
+	overflow: hidden;
+	border-radius: 10px;
 	box-sizing: border-box;
 }
 
 .card__image-container {
-  box-sizing: border-box;
-  display: block;
+	box-sizing: border-box;
+	display: block;
 	background-color: #302d28;
-  width: 282px;
-  height: 282px;
-  position: relative;
+	width: 282px;
+	height: 282px;
+	position: relative;
 }
 
 .card__image {
-  width: 100%;
-  height: 100%;
+	width: 100%;
+	height: 100%;
 	object-fit: cover; /* Ensures the image covers its container without stretching */
-  object-position: center; /* Centers the image */
+	object-position: center; /* Centers the image */
 }
 
 .card__image:hover {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .card__delete-button {
-  min-width: 18px;
-  min-height: 19.3px;
-  position: absolute;
-  top: 18px;
-  right: 15px;
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  background-image: url(../components/Card/Card__images/delete-button.svg);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: all 0.2s ease-out;
-  cursor: pointer;
-  visibility: hidden;
-  opacity: 0;
+	min-width: 18px;
+	min-height: 19.3px;
+	position: absolute;
+	top: 18px;
+	right: 15px;
+	background-color: transparent;
+	border: none;
+	padding: 0;
+	background-image: url(../components/Card/Card__images/delete-button.svg);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	transition: all 0.2s ease-out;
+	cursor: pointer;
+	visibility: hidden;
+	opacity: 0;
 }
 
 .card__delete-button:hover {
-  opacity: 0.6;
+	opacity: 0.6;
 }
 
 .card__delete-button_visible {
-  visibility: visible;
-  opacity: 1;
+	visibility: visible;
+	opacity: 1;
 }
 
 .card__bar {
-  min-height: 80px;
-  padding: 0 18px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #F3F3F3;
+	min-height: 80px;
+	padding: 0 18px 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #f3f3f3;
 
-  color:  #191919;
+	color: #191919;
 }
 
 .card__name {
-  text-overflow: ellipsis;
-    #F3F3F3-space: nowrap;
-  overflow: hidden;
-  font-style: normal;
-  font-size: 24px;
-  line-height: 29px;
-  font-weight: 900;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	font-style: normal;
+	font-size: 24px;
+	line-height: 29px;
+	font-weight: 900;
 }
 
 .card__like-button {
-  margin-left: auto;
-  min-width: 21px;
-  min-height: 19px;
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  background-image: url(../components/Card/Card__images/like-button.svg);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: all 0.2s ease-out;
-  cursor: pointer;
+	margin-left: auto;
+	min-width: 21px;
+	min-height: 19px;
+	background-color: transparent;
+	border: none;
+	padding: 0;
+	background-image: url(../components/Card/Card__images/like-button.svg);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	transition: all 0.2s ease-out;
+	cursor: pointer;
 }
 
 .card__like-button:hover {
-  opacity: 0.5;
+	opacity: 0.5;
 }
 
 .card__like-button_active {
-  background-image: url(../components/Card/Card__images/like-button_active.svg);
+	background-image: url(../components/Card/Card__images/like-button_active.svg);
 }
 
 .card__likes {
-  margin: 0;
-  min-width: 9px;
-  height: 13px;
-  font-size: 13px;
-  line-height: 16px;
-  text-align: center;
+	margin: 0;
+	min-width: 9px;
+	height: 13px;
+	font-size: 13px;
+	line-height: 16px;
+	text-align: center;
 }
 
 .card__likesContainer {
-  min-width: 21px;
-  min-height: 35px;
-  padding: 22px 0 22px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+	min-width: 21px;
+	min-height: 35px;
+	padding: 22px 0 22px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
 }
